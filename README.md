@@ -4,6 +4,24 @@ A ToDo app with a time tracker.
 
 ## Design
 
+### Views
+
+#### Event tracker
+
+Can show a list of tasks need to do at this time. Or input a new event, which will bind to a un expected task.
+
+#### Plan
+
+Show a list of tags on the left. A way to select tags to show on this list.
+
+Click a tag to show a list of projects in the middle.
+
+Click a project to edit the project and tasks associate with it.
+
+#### Report Page
+
+Report how a day is spent.
+
 ### Models
 
 #### Project
