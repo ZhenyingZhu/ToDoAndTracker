@@ -26,7 +26,11 @@ Report how a day is spent.
 
 #### Project
 
-A project which can be a one-time work or a recurring work or even a habit. Can have a bunch of tasks. It can be categorized into several types, like work, study, household, exercise, leisure to generate reports. It can also have tags. It can also have a link to a note (put related files and email folders in the note). Also a list of keywords.
+A project which can be a one-time work or a recurring work or even a habit. Can have a bunch of tasks. It can be categorized into several types, like work, study, household, exercise, leisure to generate reports. It can also have tags. It can also have a link to a note (put related files and email folders in the note). Also a list of keywords. Can have a create time, start time and deadline.
+
+#### Note
+
+Maybe seperate note from Project so that it is more extendable.
 
 #### Task
 
