@@ -28,13 +28,37 @@ Report how a day is spent.
 
 A project which can be a one-time work or a recurring work or even a habit. Can have a bunch of tasks. It can be categorized into several types, like work, study, household, exercise, leisure to generate reports. It can also have tags. It can also have a link to a note (put related files and email folders in the note). Also a list of keywords. Can have a create time, start time and deadline.
 
+Properties
+
+- Project Id
+- Project Name
+- Type (work, study, household, health, leisure)
+- create time
+- start time
+- deadline
+- note ref
+- tags list
+- tasks list
+
 #### Note
 
 Maybe seperate note from Project so that it is more extendable.
 
+Properties
+
+- Project Id Ref
+- keywords list
+- path to a onenote link
+
+#### Keyword
+
+- keyword
+
 #### Task
 
 A step in a project to be done. Can set a range of time to deal with it, also an estimate duration to complete it. With such design, in a specific timespot there could be multiple tasks need to be work on. It is fine because this is for plan purpose. It should also have a rate of how hard it is. Tasks can also recur. It can be binded to a list of events.
+
+Properties
 
 #### Event
 
