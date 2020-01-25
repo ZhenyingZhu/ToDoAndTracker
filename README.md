@@ -60,6 +60,9 @@ A step in a project to be done. Can set a range of time to deal with it, also an
 
 Properties
 
+- created date
+- dead line
+
 #### Event
 
 The real hands-on time for a task. It is a track of how a task is done. If an event is interrupted, then it becomes to two events. Can also have a rate of work efficidency.
