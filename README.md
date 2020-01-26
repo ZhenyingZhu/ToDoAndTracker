@@ -8,19 +8,29 @@ A ToDo app with a time tracker.
 
 #### Event tracker
 
-Can show a list of tasks need to do at this time. Or input a new event, which will bind to a un expected task.
+Can show a list of tasks need to do at this time. Should allow sort.
+
+At top should be a text input which allows to input a new event. This event will bind to an unplaned task in an unplaned project (all the unplaned task come here).
 
 #### Plan
 
-Show a list of tags on the left. A way to select tags to show on this list.
+Show a list of tags on the left. Should also provide a way to select tags to show on this list.
 
-Click a tag to show a list of projects in the middle.
+Click a tag can show a list of projects in the middle. Should provide a way to sort those projects.
 
-Click a project to edit the project and tasks associate with it.
+Click a project can bring up the details on the right. The details include a list of tasks and a note. Can also edit the project and tasks associate with it.
+
+Tasks should only have names. All other details should be recorded in the note.
 
 #### Report Page
 
-Report how a day is spent.
+Three kinds of reports: per day, per project and an efficiency view. Should allow to select as a drop down list in the nav bar.
+
+Day report shows how a day is spent. A list of projects that is expect to start and the tasks that are done. Then show keynotes from previous dairies, and then allow to write a new dairy.
+
+Project report shows a caldendar with how each tasks is done.
+
+Efficiciency view is a caldendar with all daily efficiencies by how many task is done. This can be decided later.
 
 ### Models
 
