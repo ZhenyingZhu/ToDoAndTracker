@@ -49,6 +49,7 @@ Properties
 - note ref
 - tags list
 - tasks list
+- is completed
 
 #### Note
 
@@ -57,7 +58,7 @@ Maybe seperate note from Project so that it is more extendable.
 Properties
 
 - Project Id Ref
-- keywords list
+- keywords list (build index?)
 - path to a onenote link
 
 #### Keyword
@@ -70,8 +71,15 @@ A step in a project to be done. Can set a range of time to deal with it, also an
 
 Properties
 
-- created date
-- dead line
+- task name
+- project id ref
+- expect start time
+- expect complete time (this is when must done. By default EOD of the start time.)
+- expect time duration (this is how long should it take)
+- expect hard rate
+- is completed/abandoned
+- how soon to recur
+- event list
 
 #### Event
 
