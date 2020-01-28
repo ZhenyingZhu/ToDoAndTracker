@@ -63,6 +63,10 @@ Properties
 
 #### Keyword
 
+Note can have a list of keywords for search.
+
+Properties
+
 - keyword
 
 #### Task
@@ -85,13 +89,22 @@ Properties
 
 The real hands-on time for a task. It is a track of how a task is done. If an event is interrupted, then it becomes to two events. Can also have a rate of work efficidency.
 
+Properties
+
+- task id ref
+- project id ref
+- start time
+- end time
+- is currently work on (index)
+
 #### Tag
 
 This is used to tag projects. Some tags can be shown on the page. Tags can have a hierarchy, i.e., like folders. The root tag is "all".
 
-#### Keyword
+Properties
 
-Project can have a list of keywords for search.
+- tag name
+- children tag list
 
 #### Report
 
