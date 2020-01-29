@@ -26,7 +26,7 @@ Tasks should only have names. All other details should be recorded in the note.
 
 Three kinds of reports: per day, per project and an efficiency view. Should allow to select as a drop down list in the nav bar.
 
-Day report shows how a day is spent. A list of projects that is expect to start and the tasks that are done. Then show keynotes from previous dairies, and then allow to write a new dairy.
+Day report shows how a day is spent. A list of projects that is expect to start and the tasks that are done. Then show keynotes from previous diaries, and then allow to write a new diary.
 
 Project report shows a caldendar with how each tasks is done.
 
@@ -106,13 +106,24 @@ Properties
 - tag name
 - children tag list
 
-#### Report
-
-Still thinking about if it should be a stored entity or a dynamically generated thing. It should list all the tasks done in a time range, compare to the task plan. Another kind of report is based on a project. Show how much days on a calendar does this project takes, and how much the progress is.
-
-#### Dairy
+#### Diary
 
 Should include a report of a day, a paragraph of the feeling, and some key takeaway to show later.
+
+Properties
+
+- Date
+- text
+- takeaway list
+
+#### Takeaway
+
+The take away from a diary. It can appear repeatly.
+
+Properties
+
+- text
+- Date list
 
 ### Storage
 
