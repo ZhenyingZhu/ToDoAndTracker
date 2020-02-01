@@ -17,17 +17,16 @@ namespace ToDoAndTracker.Models
 
     public class Project
     {
-        [Key]
-        public int ProjectId;
+        public int Id { get; set; }
 
-        public string ProjectName;
+        public string Name { get; set; }
 
-        public ProjectType ProjectType;
+        public ProjectType Type { get; set; }
 
-        public DateTime ProjectCreateTime;
+        public DateTime CreateTime { get; set; }
 
-        public DateTime ProjectStartTime;
+        public DateTime StartTime { get; set; }
 
-        public DateTime ProjectDeadline;
+        public DateTime Deadline { get; set; }
     }
 }
