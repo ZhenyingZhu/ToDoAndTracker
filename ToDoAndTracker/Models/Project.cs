@@ -28,5 +28,7 @@ namespace ToDoAndTracker.Models
         public DateTime StartTime { get; set; }
 
         public DateTime Deadline { get; set; }
+
+        public ICollection<Note> { get; set; }
     }
 }
