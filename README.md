@@ -69,6 +69,8 @@ Properties
 
 - keyword
 
+Keyword not backlink to notes because I'd like to see if .NET support such query. I suspect internally it is still stored as a foreign key table.
+
 #### Task
 
 A step in a project to be done. Can set a range of time to deal with it, also an estimate duration to complete it. With such design, in a specific timespot there could be multiple tasks need to be work on. It is fine because this is for plan purpose. It should also have a rate of how hard it is. Tasks can also recur. It can be binded to a list of events.
