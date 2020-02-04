@@ -12,7 +12,6 @@ namespace ToDoAndTracker.Models
         Household,
         SelfImprove,
         Health,
-
     }
 
     public class Project
