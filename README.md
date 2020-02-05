@@ -94,7 +94,7 @@ The real hands-on time for a task. It is a track of how a task is done. If an ev
 Properties
 
 - task id ref
-- project id ref
+- project id ref ? Do I need it?
 - start time
 - end time
 - is currently work on (index)

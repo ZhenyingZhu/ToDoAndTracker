@@ -22,6 +22,10 @@ namespace ToDoAndTracker.Models
 
         public string Name { get; set; }
 
+        public int ProjectId { get; set; }
+
+        public Project Project { get; set; }
+
         public DateTime ExpectedStartTime { get; set; }
 
         public DateTime ExpectedCompleteTime { get; set; }
