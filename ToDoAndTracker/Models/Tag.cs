@@ -7,7 +7,7 @@ namespace ToDoAndTracker.Models
 {
     public class Tag
     {
-        public string Value { get; set; }
+        public string Name { get; set; }
 
         public ICollection<Tag> SubTags { get; set; }
     }

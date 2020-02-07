@@ -12,5 +12,9 @@ namespace ToDoAndTracker.Models
         public DateTime NextReminderDate { get; set; }
 
         public string Content { get; set; }
+
+        public int DiaryId { get; set; }
+
+        public Diary Diary { get; set; }
     }
 }

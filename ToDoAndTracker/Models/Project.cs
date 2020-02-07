@@ -30,5 +30,11 @@ namespace ToDoAndTracker.Models
         public DateTime Deadline { get; set; }
 
         public ICollection<Note> Notes { get; set; }
+
+        public ICollection<Tag> Tags { get; set; }
+
+        public ICollection<Task> Tasks { get; set; }
+
+        public bool IsCompleted { get; set; }
     }
 }

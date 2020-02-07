@@ -40,13 +40,13 @@ A project which can be a one-time work or a recurring work or even a habit. Can 
 
 Properties
 
-- Project Id
-- Project Name
+- Id
+- Name
 - Type (work, study, household, health, leisure)
 - create time
 - start time
 - deadline
-- note ref
+- notes
 - tags list
 - tasks list
 - is completed
@@ -59,9 +59,11 @@ Properties
 
 - Project Id Ref
 - keywords list (build index?)
-- path to a onenote link
+- Context: for now it could be a path to a onenote link
 
 #### Keyword
+
+Don't need a special table for keywords. Build index on the Keyword field in Note, and it should be easy to fetch then.
 
 Note can have a list of keywords for search.
 
@@ -78,12 +80,12 @@ A step in a project to be done. Can set a range of time to deal with it, also an
 Properties
 
 - task name
-- project id ref
+- project ref
 - expect start time
 - expect complete time (this is when must done. By default EOD of the start time.)
 - expect time duration (this is how long should it take)
-- expect hard rate
-- is completed/abandoned
+- difficulty
+- State: is queued/started/blocked/completed/abandoned
 - how soon to recur
 - event list
 
@@ -93,11 +95,11 @@ The real hands-on time for a task. It is a track of how a task is done. If an ev
 
 Properties
 
-- task id ref
-- project id ref ? Do I need it?
+- task ref
+- project id ref ? It can be fetched from task so get rid of.
 - start time
 - end time
-- is currently work on (index)
+- OnGoing: is currently work on. index it so that a list of current events can be easily queried.
 
 #### Tag
 
@@ -105,8 +107,8 @@ This is used to tag projects. Some tags can be shown on the page. Tags can have 
 
 Properties
 
-- tag name
-- children tag list
+- Name
+- Sub tag list
 
 #### Diary
 
@@ -125,7 +127,8 @@ The take away from a diary. It can appear repeatly.
 Properties
 
 - text
-- Date list
+- Next Reminder Date: Every time hit this reminder, set the next reminder.
+- Diary ref.
 
 ### Storage
 

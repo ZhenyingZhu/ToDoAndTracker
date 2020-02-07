@@ -12,5 +12,7 @@ namespace ToDoAndTracker.Models
         public DateTime Date { get; set; }
 
         public string Content { get; set; }
+
+        public ICollection<Takeaway> Takeaways { get; set; }
     }
 }
