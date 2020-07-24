@@ -2,3 +2,8 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+// Zhenying: changing playground
+$(document).ready(function () {
+    $("#playground p").text("Test JQuery");
+}());
