@@ -26,7 +26,7 @@ A ToDo app with a time tracker.
 
 #### Event tracker
 
-Remind what to do now.
+Remind what to do at current moment.
 
 At top should be a text input which allows to input an unplanned task name. It will create an task in an unplaned project (all the unplaned task come here first). Then start an event of this task.
 
@@ -36,17 +36,19 @@ Then show a list of projects with tasks need to do at this time. Should allow so
 
 #### Planer
 
-**HERE**
+Basically a todo app.
 
-Show a list of tags on the left. Should also provide a way to select tags to show on this list.
+Show a list of tags on the left. Should also provide a way to filter tags to show on this list by toggle the visibility of a tag.
 
-Click a tag can show a list of projects in the middle. Should provide a way to sort those projects.
+Click a tag can show a list of projects in the middle. Should provide a way to sort those projects, by created time, expect start time, expect deadline, priority. Allow to hide or display completed projects.
 
-Click a project can bring up the details on the right. The details include a list of tasks and a note. Can also edit the project and tasks associate with it.
+Click a project can bring up the details on the right. The details include a list of tasks and the project note. Can also edit the project name, note and tasks associate with it. Tasks are sorted by task step num. The step num can be changed here. Can hide or display not-in-progress tasks.
 
 Tasks should only have names. All other details should be recorded in the note.
 
 #### Report Page
+
+**HERE**
 
 Three kinds of reports: per day, per project and an efficiency view. Should allow to select as a drop down list in the nav bar.
 
@@ -86,6 +88,7 @@ Properties
 - Id
 - Name
 - project ref
+- step num: used to sort tasks in a project
 - expect start time: a timestamp
 - expect complete time: this is when the task must done. By default is the EOD of the start time.
 - expect time duration: this is how long should it take
