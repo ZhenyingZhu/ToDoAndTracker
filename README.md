@@ -34,23 +34,38 @@ If currently there is an ongoing event, show how long has it been since start, e
 
 Then show a list of projects with tasks need to do at this time. Should allow sort by project create time, deadline, priority.
 
-#### Planer
+#### Planner
 
 Basically a todo app.
 
 Show a list of tags on the left. Should also provide a way to filter tags to show on this list by toggle the visibility of a tag.
 
-Click a tag can show a list of projects in the middle. Should provide a way to sort those projects, by created time, expect start time, expect deadline, priority. Allow to hide or display completed projects.
+Click a tag can show a list of projects in the middle. Should provide a way to sort those projects, by created time, deadline, priority, the first undone task's expect start time. Allow to hide or display completed projects.
 
 Click a project can bring up the details on the right. The details include a list of tasks and the project note. Can also edit the project name, note and tasks associate with it. Tasks are sorted by task step num. The step num can be changed here. Can hide or display not-in-progress tasks.
 
 Tasks should only have names. All other details should be recorded in the note.
 
-#### Report Page
+#### Project Report Page
+
+Left bar shows a list of tags similar to planner. Middle bar shows a list of projects which are similar to planner as well. In the right shows the project report.
+
+In the top of the right place, provide three options to choose the kind of reports:
+
+1. detail report: shows if the project is completed, since the first task starts how long has spent. List each task and their events' efficiency.
+2. calendar report: shows how many days are spent on this project. Show the events and their efficiency.
 
 **HERE**
 
-Three kinds of reports: per day, per project and an efficiency view. Should allow to select as a drop down list in the nav bar.
+per day, per project and an efficiency view. Should allow to select as a drop down list in the nav bar.
+
+Day report shows how a day is spent. A list of projects that is expect to start and the tasks that are done. Then show keynotes from previous diaries, and then allow to write a new diary.
+
+Project report shows a caldendar with how each tasks is done.
+
+Efficiciency view is a caldendar with all daily efficiencies by how many task is done. This can be decided later.
+
+#### Calendar
 
 Day report shows how a day is spent. A list of projects that is expect to start and the tasks that are done. Then show keynotes from previous diaries, and then allow to write a new diary.
 
