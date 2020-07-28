@@ -10,9 +10,9 @@ A ToDo app with a time tracker.
   - Can contains a bunch of tasks.
   - It can be categorized into several types (like work, study, household, exercise, leisure) to generate reports.
   - Each one has a create date and a deadline date. The actual start fime can be calculated from the task.
-  - Uses tags to mimic folders for projects
+  - Uses tags to mimic folders for projects.
 - Task: A step in a project to be done.
-  - Can set a timestamp of the expected start time and one for the end time, and also an estimate duration to complete it.
+  - Can set a timestamp of the expected start time and one for the end time, and also an estimate duration to complete it. The expected end time is when it should be completed, so it can be later than start time + estimate duration.
   - The real executing time is tracked by events.
   - Tasks are mainly for planning purpose. With such design, if plan well, idealy at a specific timespot there should be only one task to deal with.
   - Tasks can also recur by either every x num of mins/hrs/days, or on a fix timestamp every day/month/year.
