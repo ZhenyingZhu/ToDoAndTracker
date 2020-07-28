@@ -50,28 +50,21 @@ Tasks should only have names. All other details should be recorded in the note.
 
 Left bar shows a list of tags similar to planner. Middle bar shows a list of projects which are similar to planner as well. In the right shows the project report.
 
-In the top of the right place, provide three options to choose the kind of reports:
+The propject report shows if the project is completed, since the first task starts how long has spent. List each task and their events' efficiency, and then the project note.
 
-1. detail report: shows if the project is completed, since the first task starts how long has spent. List each task and their events' efficiency.
-2. calendar report: shows how many days are spent on this project. Show the events and their efficiency.
+#### Calendar Report Page
+
+Shows a calendar. In the top can select month. In the left list tags and projects.
+
+In each cell of the calendar, list all the projects of the day. Should be able to distinguish if all the tasks have been done on that day. It can be decided later.
+
+Can also show an efficiency view. It lists all daily efficiencies by how many task is done. This can be decided later.
+
+#### Daily Report Page
 
 **HERE**
 
-per day, per project and an efficiency view. Should allow to select as a drop down list in the nav bar.
-
 Day report shows how a day is spent. A list of projects that is expect to start and the tasks that are done. Then show keynotes from previous diaries, and then allow to write a new diary.
-
-Project report shows a caldendar with how each tasks is done.
-
-Efficiciency view is a caldendar with all daily efficiencies by how many task is done. This can be decided later.
-
-#### Calendar
-
-Day report shows how a day is spent. A list of projects that is expect to start and the tasks that are done. Then show keynotes from previous diaries, and then allow to write a new diary.
-
-Project report shows a caldendar with how each tasks is done.
-
-Efficiciency view is a caldendar with all daily efficiencies by how many task is done. This can be decided later.
 
 #### Diary
 
