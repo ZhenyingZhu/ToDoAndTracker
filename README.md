@@ -62,11 +62,9 @@ Can also show an efficiency view. It lists all daily efficiencies by how many ta
 
 #### Daily Report Page
 
-**HERE**
+Day report shows how a day is spent. A list of projects that is expect to start and the tasks that are done. Then show keynotes from previous diaries.
 
-Day report shows how a day is spent. A list of projects that is expect to start and the tasks that are done. Then show keynotes from previous diaries, and then allow to write a new diary.
-
-#### Diary
+At the bottom there is a text box for write dairy.
 
 ### Models
 
@@ -78,14 +76,16 @@ Properties
 
 - Id
 - Name
-- Type (work, study, household, health, leisure)
-- tag list: Don't need a table I think. EF should still create a table for tags.
+- Type (work, household, SelfImprove, health, leisure)
+- tag list: Tag is a class because when assign a tag to a project, we want to easily select from a list of tags
 - create date
 - deadline date
 - project note ref
 - task ref list
-- priority: important, less important, not important
+- priority: None, Low, Medium, High
 - is completed
+
+Keywords are in note because search keywords should show notes instead of the project. Note has ref to the project.
 
 #### Task
 
@@ -115,6 +115,14 @@ Properties
 - start time: index it so that building a report is efficient
 - end time: index it so that if it is null, it is the current on going event.
 - rate of efficiency
+
+#### Tag
+
+Just a list of strings that are uniq.
+
+Properties
+
+- Name
 
 #### ProjectNote
 

@@ -12,6 +12,15 @@ namespace ToDoAndTracker.Models
         Household,
         SelfImprove,
         Health,
+        Leisure
+    }
+
+    public enum ProjectPriority
+    {
+        High,
+        Medium,
+        Low,
+        None
     }
 
     public class Project
@@ -23,17 +32,17 @@ namespace ToDoAndTracker.Models
 
         public ProjectType Type { get; set; }
 
-        public DateTime CreateTime { get; set; }
-
-        public DateTime StartTime { get; set; }
-
-        public DateTime Deadline { get; set; }
-
-        public ICollection<Note> Notes { get; set; }
-
         public ICollection<Tag> Tags { get; set; }
 
+        public DateTime CreateDate { get; set; }
+
+        public DateTime DeadlineDate { get; set; }
+
+        public ProjectNote ProjectNote { get; set; }
+
         public ICollection<Task> Tasks { get; set; }
+
+        public ProjectPriority Priority { get; set; }
 
         public bool IsCompleted { get; set; }
     }

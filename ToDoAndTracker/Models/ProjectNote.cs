@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ToDoAndTracker.Models
 {
-    public class Note
+    public class ProjectNote
     {
         [Key]
         public int Id { get; set; }
