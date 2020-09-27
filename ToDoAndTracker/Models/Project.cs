@@ -28,22 +28,31 @@ namespace ToDoAndTracker.Models
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public ProjectType Type { get; set; }
 
+        // Many-to-Many relationship.
         public ICollection<Tag> Tags { get; set; }
 
+        [Required]
         public DateTime CreateDate { get; set; }
 
         public DateTime DeadlineDate { get; set; }
 
+        // One-to-One relationship.
+        [Required]
         public ProjectNote ProjectNote { get; set; }
 
+        // One-to-Many relationship.
         public ICollection<Task> Tasks { get; set; }
 
+        [Required]
         public ProjectPriority Priority { get; set; }
 
+        [Required]
         public bool IsCompleted { get; set; }
     }
 }
