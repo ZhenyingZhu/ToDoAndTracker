@@ -34,7 +34,7 @@ namespace ToDoAndTracker.Models
         [Required]
         public ProjectType Type { get; set; }
 
-        // Many-to-Many relationship.
+        // Many-to-Many.
         public ICollection<Tag> Tags { get; set; }
 
         [Required]
@@ -42,11 +42,11 @@ namespace ToDoAndTracker.Models
 
         public DateTime DeadlineDate { get; set; }
 
-        // One-to-One relationship.
+        // One-to-One Parent.
         [Required]
         public ProjectNote ProjectNote { get; set; }
 
-        // One-to-Many relationship.
+        // One-to-Many Parent.
         public ICollection<Task> Tasks { get; set; }
 
         [Required]

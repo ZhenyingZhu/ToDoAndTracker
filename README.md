@@ -103,6 +103,7 @@ Properties
 - State: can be queued/started/blocked/completed/abandoned
 - next recur rule: a formatted string. can set to be every x days, or on a fix date. when complete or abandon this task, create the next one.
 - event ref list. Actual start and complete time can be calculated by the events when the state is completed/abandoned.
+- difficulty: how hard the task is. Not in use for now but put in track.
 
 #### Event
 
