@@ -9,6 +9,9 @@ namespace ToDoAndTracker.Models
     public class Tag
     {
         [Key]
-        public string Name { get; set; }
+        public string Id { get; set; }
+
+        // Many-to-Many.
+        public ICollection<ProjectTag> ProjectTags { get; set; }
     }
 }
