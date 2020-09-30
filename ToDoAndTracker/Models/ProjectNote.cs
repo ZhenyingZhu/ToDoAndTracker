@@ -11,12 +11,14 @@ namespace ToDoAndTracker.Models
         [Key]
         public int Id { get; set; }
 
+        // One-to-One Child.
+        [Required]
         public int ProjectId { get; set; }
-
         public Project Project { get; set; }
 
         public ICollection<string> Keywords { get; set; }
 
-        public string Context { get; set; }
+        [Required]
+        public string Content { get; set; }
     }
 }

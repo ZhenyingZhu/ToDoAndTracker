@@ -31,6 +31,7 @@ namespace ToDoAndTracker.Models
         public string Name { get; set; }
 
         // One-to-Many Child.
+        [Required]
         public int ProjectId { get; set; }
         public Project Project { get; set; }
 
@@ -43,10 +44,13 @@ namespace ToDoAndTracker.Models
 
         public TimeSpan ExpectedDuration { get; set; }
 
+        [Required]
         public TaskState State { get; set; }
 
+        // This is a string which follows an interal format.
+        // Evaludate when this task completes, and create the next task with the correct ExpectedStartTime.
         // If not set, not recur.
-        public TimeSpan RecurPeriod { get; set; }
+        public string RecurRule { get; set; }
 
         // One-to-Many Parent.
         public ICollection<Event> Events { get; set; }

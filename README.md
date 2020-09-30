@@ -116,6 +116,7 @@ Properties
 - start time: index it so that building a report is efficient
 - end time: index it so that if it is null, it is the current on going event.
 - rate of efficiency
+- diary ref: link to a diary. Can use this to build a calendar view to see what event occurs on which date.
 
 #### Tag
 
@@ -145,17 +146,17 @@ Properties
 
 - Date
 - content
-- takeaway ref list
+- event ref list
+- takeaway ref list: this is many-to-many relationship, because some takeaways can occur from multiple days, like the recurring ones.
 
 #### Takeaway
 
-The take away from a diary. It can appear repeatly.
+The take away from a diary. The difference between it and a task is that this is not something to do, but something to think, like be focus. It can appear repeatly.
 
 Properties
 
-- text
-- Next Reminder Date: Every time hit this reminder, set the next reminder.
-- Diary ref.
+- Content
+- Diary ref: Next Reminder Date can be recorded it here.
 
 ### Security
 
