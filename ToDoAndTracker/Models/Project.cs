@@ -43,7 +43,6 @@ namespace ToDoAndTracker.Models
         public DateTime DeadlineDate { get; set; }
 
         // One-to-One Parent.
-        [Required]
         public ProjectNote Note { get; set; }
 
         // One-to-Many Parent.
