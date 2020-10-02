@@ -38,8 +38,10 @@ namespace ToDoAndTracker.Models
         public ICollection<ProjectTag> ProjectTags { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime CreateDate { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime DeadlineDate { get; set; }
 
         // One-to-One Parent.

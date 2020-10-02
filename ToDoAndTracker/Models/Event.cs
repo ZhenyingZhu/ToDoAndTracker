@@ -24,8 +24,10 @@ namespace ToDoAndTracker.Models
         public Task Task { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
         public DateTime StartTime { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; }
 
         // One-to-Many Child.

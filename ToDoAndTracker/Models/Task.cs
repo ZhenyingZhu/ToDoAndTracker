@@ -38,10 +38,13 @@ namespace ToDoAndTracker.Models
         // If not set, appear in the end of the list.
         public int StepNumber { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime ExpectedStartTime { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime ExpectedCompleteTime { get; set; }
 
+        [DataType(DataType.Duration)]
         public TimeSpan ExpectedDuration { get; set; }
 
         [Required]

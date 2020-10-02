@@ -18,6 +18,6 @@ namespace ToDoAndTracker.Data
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<ProjectNote> ProjectNotes { get; set; }
-
+        public DbSet<Tag> Tags { get; set; }
     }
 }
