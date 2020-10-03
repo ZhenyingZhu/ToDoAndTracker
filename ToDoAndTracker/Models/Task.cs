@@ -28,6 +28,7 @@ namespace ToDoAndTracker.Models
         public int Id { get; set; }
 
         [Required]
+        [StringLength(256)]
         public string Name { get; set; }
 
         // One-to-Many Child.

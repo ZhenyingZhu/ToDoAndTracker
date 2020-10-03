@@ -12,6 +12,7 @@ namespace ToDoAndTracker.Models
         public int Id { get; set; }
 
         [Required]
+        [StringLength(256)]
         public string Content { get; set; }
 
         // Many-to-Many.
