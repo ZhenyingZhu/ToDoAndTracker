@@ -37,6 +37,7 @@ namespace ToDoAndTracker.Models
         public Project Project { get; set; }
 
         // If not set, appear in the end of the list.
+        [Range(1, 100)]
         public int StepNumber { get; set; }
 
         [DataType(DataType.DateTime)]
