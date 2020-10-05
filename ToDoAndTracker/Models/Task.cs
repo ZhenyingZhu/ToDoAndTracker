@@ -24,15 +24,13 @@ namespace ToDoAndTracker.Models
 
     public class Task
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(256)]
+        [DataType(DataType.Text),StringLength(256)]
         public string Name { get; set; }
 
         // One-to-Many Child.
-        [Required]
         public int ProjectId { get; set; }
         public Project Project { get; set; }
 
@@ -40,21 +38,22 @@ namespace ToDoAndTracker.Models
         [Range(1, 100)]
         public int StepNumber { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.DateTime),Display(Name = "Expected Start Time")]
         public DateTime ExpectedStartTime { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.DateTime),Display(Name = "Expected Complete Time")]
         public DateTime ExpectedCompleteTime { get; set; }
 
-        [DataType(DataType.Duration)]
+        [DataType(DataType.Duration),Display(Name = "Expected How Long to Complete")]
         public TimeSpan ExpectedDuration { get; set; }
 
-        [Required]
         public TaskState State { get; set; }
 
         // This is a string which follows an interal format.
         // Evaludate when this task completes, and create the next task with the correct ExpectedStartTime.
         // If not set, not recur.
+        // TODO: when defined how to implement it, add a regular expression.
+        [DataType(DataType.Text),Display(Name = "How to Recur")]
         public string RecurRule { get; set; }
 
         // One-to-Many Parent.

@@ -8,8 +8,7 @@ namespace ToDoAndTracker.Models
 {
     public class Tag
     {
-        [Key]
-        [StringLength(50)]
+        [DataType(DataType.Text),StringLength(50),Display(Name = "Tag")]
         public string Id { get; set; }
 
         // Many-to-Many.

@@ -15,19 +15,16 @@ namespace ToDoAndTracker.Models
 
     public class Event
     {
-        [Key]
         public int Id { get; set; }
 
         // One-to-Many Child.
-        [Required]
         public int TaskId { get; set; }
         public Task Task { get; set; }
 
-        [Required]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.DateTime),Display(Name = "Start Time")]
         public DateTime StartTime { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.DateTime),Display(Name = "End Time")]
         public DateTime EndTime { get; set; }
 
         // One-to-Many Child.

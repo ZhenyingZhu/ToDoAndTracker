@@ -8,14 +8,13 @@ namespace ToDoAndTracker.Models
 {
     public class Diary
     {
-        [Key]
         public int Id { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
         [Required]
+        [DataType(DataType.MultilineText)]
         public string Content { get; set; }
 
         // One-to-Many Parent.

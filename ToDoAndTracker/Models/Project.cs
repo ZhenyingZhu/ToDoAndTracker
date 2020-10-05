@@ -26,39 +26,33 @@ namespace ToDoAndTracker.Models
 
     public class Project
     {
-        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(256)]
+        [DataType(DataType.Text),StringLength(256)]
         public string Name { get; set; }
 
-        [Required]
         public ProjectType Type { get; set; }
 
         // Many-to-Many.
         public ICollection<ProjectTag> ProjectTags { get; set; }
 
-        [Required]
-        [Display(Name = "Create Date")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.Date),Display(Name = "Create Date")]
         public DateTime CreateDate { get; set; }
 
-        [DataType(DataType.Date)]
-        [Display(Name = "Deadline Date")]
+        [DataType(DataType.Date),Display(Name = "Deadline Date")]
         public DateTime DeadlineDate { get; set; }
 
         // One-to-One Parent.
+        [Required]
         public ProjectNote Note { get; set; }
 
         // One-to-Many Parent.
         public ICollection<Task> Tasks { get; set; }
 
-        [Required]
         public ProjectPriority Priority { get; set; }
 
-        [Required]
         public bool IsCompleted { get; set; }
     }
 }
