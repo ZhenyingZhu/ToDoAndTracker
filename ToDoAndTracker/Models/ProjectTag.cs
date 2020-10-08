@@ -8,10 +8,10 @@ namespace ToDoAndTracker.Models
     public class ProjectTag
     {
         // Many-to-Many link.
-        public int ProjectId;
-        public Project Project;
+        public int ProjectId { get; set; }
+        public Project Project { get; set; }
 
-        public string TagId;
-        public Tag Tag;
+        public string TagId { get; set; }
+        public Tag Tag { get; set; }
     }
 }

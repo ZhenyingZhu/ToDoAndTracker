@@ -29,20 +29,25 @@ namespace ToDoAndTracker.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             builder.Entity<Project>().ToTable("Project");
             builder.Entity<Task>().ToTable("Task");
             builder.Entity<Event>().ToTable("Event");
 
             builder.Entity<ProjectNote>().ToTable("ProjectNote");
+            builder.Entity<Keyword>().ToTable("Keyword");
+            builder.Entity<ProjectNoteKeyword>().ToTable("ProjectNoteKeyword");
+            builder.Entity<ProjectNoteKeyword>().HasKey(p => new { p.ProjectNoteId, p.KeywordId });
 
             builder.Entity<Tag>().ToTable("Tag");
             builder.Entity<ProjectTag>().ToTable("ProjectTag");
-            builder.Entity<ProjectTag>().HasKey(pt => new { pt.ProjectId, pt.TagId });
+             builder.Entity<ProjectTag>().HasKey(p => new { p.ProjectId, p.TagId });
 
             builder.Entity<Diary>().ToTable("Diary");
             builder.Entity<Takeaway>().ToTable("Takeaway");
             builder.Entity<DiaryTakeaway>().ToTable("DiaryTakeaway");
-            builder.Entity<DiaryTakeaway>().HasKey(dt => new { dt.DiaryId, dt.TakeawayId });
+            builder.Entity<DiaryTakeaway>().HasKey(d => new { d.DiaryId, d.TakeawayId });
         }
     }
 }

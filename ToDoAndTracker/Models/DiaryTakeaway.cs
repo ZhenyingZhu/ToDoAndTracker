@@ -8,10 +8,10 @@ namespace ToDoAndTracker.Models
     public class DiaryTakeaway
     {
         // Many-to-Many link.
-        public int DiaryId;
-        public Diary Diary;
+        public int DiaryId { get; set; }
+        public Diary Diary { get; set; }
 
-        public int TakeawayId;
-        public Takeaway Takeaway;
+        public int TakeawayId { get; set; }
+        public Takeaway Takeaway { get; set; }
     }
 }

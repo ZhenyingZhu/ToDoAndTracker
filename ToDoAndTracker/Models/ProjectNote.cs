@@ -14,7 +14,8 @@ namespace ToDoAndTracker.Models
         public int ProjectId { get; set; }
         public Project Project { get; set; }
 
-        public ICollection<string> Keywords { get; set; }
+        // Many-to-Many.
+        public ICollection<ProjectNoteKeyword> ProjectNoteKeywords { get; set; }
 
         [Required]
         [DataType(DataType.Url),Display(Name = "Note Link")]
