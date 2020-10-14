@@ -11,10 +11,12 @@ namespace ToDoAndTracker.Data
         {
             context.Database.EnsureCreated();
 
-            if (context.Projects.Any())
-            {
-                return;
-            }
+            // zhenying: comment out to test identity.
+            // test user password: "G{^p6["
+            //if (context.Projects.Any())
+            //{
+            //    return;
+            //}
         }
     }
 }

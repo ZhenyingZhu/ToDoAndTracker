@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace ToDoAndTracker.Models
         Low
     }
 
+    [Authorize]
     public class Event
     {
         public int Id { get; set; }

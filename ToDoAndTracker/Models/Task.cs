@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace ToDoAndTracker.Models
         Hard
     }
 
+    [Authorize]
     public class Task
     {
         public int Id { get; set; }
