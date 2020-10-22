@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ToDoAndTracker
 {
@@ -80,6 +81,14 @@ namespace ToDoAndTracker
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options))
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind("CookieSettings", options));
+
+            // zhenying: with this the index page keep redirecting.
+            //services.AddAuthorization(options =>
+            //{
+            //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            //        .RequireAuthenticatedUser()
+            //        .Build();
+            //});
 
             services.AddMvc(
                 options => options.EnableEndpointRouting = false)
