@@ -82,7 +82,7 @@ namespace ToDoAndTracker
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options))
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind("CookieSettings", options));
 
-            // zhenying: with this the index page keep redirecting.
+            // zhenying: with this the index page keep redirecting. Without this it should still work.
             //services.AddAuthorization(options =>
             //{
             //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
