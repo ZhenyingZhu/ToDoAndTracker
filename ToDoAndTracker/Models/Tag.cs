@@ -13,6 +13,8 @@ namespace ToDoAndTracker.Models
         [DataType(DataType.Text),StringLength(50),Display(Name = "Tag")]
         public string Id { get; set; }
 
+        public string OwnerId { get; set; }
+
         // Many-to-Many.
         public ICollection<ProjectTag> ProjectTags { get; set; }
     }

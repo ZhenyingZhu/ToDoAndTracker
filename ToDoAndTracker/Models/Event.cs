@@ -19,6 +19,8 @@ namespace ToDoAndTracker.Models
     {
         public int Id { get; set; }
 
+        public string OwnerId { get; set; }
+
         // One-to-Many Child.
         public int TaskId { get; set; }
         public Task Task { get; set; }

@@ -12,6 +12,8 @@ namespace ToDoAndTracker.Models
     {
         public int Id { get; set; }
 
+        public string OwnerId { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 

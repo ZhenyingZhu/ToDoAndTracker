@@ -28,6 +28,8 @@ namespace ToDoAndTracker.Models
     {
         public int Id { get; set; }
 
+        public string OwnerId { get; set; }
+
         [Required]
         [DataType(DataType.Text),StringLength(256)]
         public string Name { get; set; }

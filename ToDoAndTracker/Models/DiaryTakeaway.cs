@@ -9,6 +9,8 @@ namespace ToDoAndTracker.Models
     [Authorize]
     public class DiaryTakeaway
     {
+        public string OwnerId { get; set; }
+
         // Many-to-Many link.
         public int DiaryId { get; set; }
         public Diary Diary { get; set; }

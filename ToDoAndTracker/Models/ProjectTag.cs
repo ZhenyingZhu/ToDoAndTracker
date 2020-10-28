@@ -9,6 +9,8 @@ namespace ToDoAndTracker.Models
     [Authorize]
     public class ProjectTag
     {
+        public string OwnerId { get; set; }
+
         // Many-to-Many link.
         public int ProjectId { get; set; }
         public Project Project { get; set; }

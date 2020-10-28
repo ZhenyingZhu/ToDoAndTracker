@@ -9,6 +9,8 @@ namespace ToDoAndTracker.Models
     [Authorize]
     public class ProjectNoteKeyword
     {
+        public string OwnerId { get; set; }
+
         // Many-to-Many
         public int ProjectNoteId { get; set; }
         public ProjectNote ProjectNote { get; set; }
