@@ -3,7 +3,6 @@ using System;
 
 namespace ToDoAndTracker.Models
 {
-    [Authorize]
     public class ErrorViewModel
     {
         public string RequestId { get; set; }

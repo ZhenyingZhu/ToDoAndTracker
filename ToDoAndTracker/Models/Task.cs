@@ -23,11 +23,11 @@ namespace ToDoAndTracker.Models
         Hard
     }
 
-    [Authorize]
     public class Task
     {
         public int Id { get; set; }
 
+        [Required]
         public string OwnerId { get; set; }
 
         [Required]
