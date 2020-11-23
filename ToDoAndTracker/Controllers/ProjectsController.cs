@@ -58,6 +58,8 @@ namespace ToDoAndTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,OwnerId,Name,Type,CreateDate,DeadlineDate,Priority,IsCompleted")] Project project)
         {
+            // zhenying: since OwnerId is a required property. If I remove it from the binding but inject it here, will the model validation
+            // fail on the client side? Also if the modelState is validated before or when the IsValid is called?
             if (ModelState.IsValid)
             {
                 _context.Add(project);
