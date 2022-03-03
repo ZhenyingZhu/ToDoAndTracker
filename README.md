@@ -80,14 +80,13 @@ Properties
 
 - Id
 - Name
-- Type (work, household, SelfImprove, health, leisure)
-- tag list: Tag is a class because when assign a tag to a project, we want to easily select from a list of tags
 - create date
 - deadline date
 - project note ref
 - task ref list
-- priority: None, Low, Medium, High
-- is completed
+- tag list: Tag is a class because when assign a tag to a project, we want to easily select from a list of tags
+- Category: (work, household, SelfImprove, health, leisure)
+- isArchieved: whether to archieve the project so it doesn't appear
 
 Keywords are in note because search keywords should show notes instead of the project. Note has ref to the project.
 
@@ -100,6 +99,7 @@ Properties
 - Id
 - Name
 - project ref
+- priority: None, Low, Medium, High
 - step num: used to sort tasks in a project
 - expect start time: a timestamp
 - expect complete time: this is when the task must done. By default is the EOD of the start time.
