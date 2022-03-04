@@ -78,14 +78,15 @@ See [terms](#Terms).
 
 Properties
 
-- Id
-- Name
+- id
+- name
 - create date
 - deadline date
-- project note ref
-- task ref list
-- tag list: Tag is a class because when assign a tag to a project, we want to easily select from a list of tags
-- Category: (work, household, SelfImprove, health, leisure)
+- project note: a link
+- tasks: an array ref to Task
+- tags: ref to Tag. Tag is a class because when assign a tag to a project, we want to easily select from a list of tags
+- category: (work, household, SelfImprove, health, leisure)
+- involvedUsers: an array of userIds as foreign keys. Not use User ref as users are probably already created
 - isArchieved: whether to archieve the project so it doesn't appear
 
 Keywords are in note because search keywords should show notes instead of the project. Note has ref to the project.
@@ -96,18 +97,20 @@ See [terms](#Terms).
 
 Properties
 
-- Id
-- Name
-- project ref
-- priority: None, Low, Medium, High
+- id
+- name
+- projectId: a foreign key to Project. Why not create it as a ref, because when create task the project would probably already created.
+- priority: notAnalysed, high, medium, low. When sort, notAnalysed should show first, as it would be highest priority.
 - step num: used to sort tasks in a project
-- expect start time: a timestamp
-- expect complete time: this is when the task must done. By default is the EOD of the start time.
-- expect time duration: this is how long should it take
-- State: can be queued/started/blocked/completed/abandoned
-- next recur rule: a formatted string. can set to be every x days, or on a fix date. when complete or abandon this task, create the next one.
-- event ref list. Actual start and complete time can be calculated by the events when the state is completed/abandoned.
-- difficulty: how hard the task is. Not in use for now but put in track.
+- expected start time: a timestamp
+- expected finish time: this is when the task must done. By default is the EOD of the start time.
+- expected time duration: this is how long should it take
+- state: can be queued/started/blocked/completed/abandoned
+- recur rule: a formatted string. can set to be every x days, or on a fix date. when complete or abandon this task, create the next one.
+- events: an array ref to Event. Actual start and complete time can be calculated by the events when the state is completed/abandoned.
+- assignedUser: the userId. It should be within the involved user of the project. Also all the involved user can see the task, but assignedUser actually works on the task
+
+TODO: difficulty: how hard the task is. Not in use for now but put in track.
 
 #### Event
 
