@@ -110,7 +110,9 @@ Properties
 - events: an array ref to Event. Actual start and complete time can be calculated by the events when the state is completed/abandoned.
 - assignedUser: the userId. It should be within the involved user of the project. Also all the involved user can see the task, but assignedUser actually works on the task
 
-TODO: difficulty: how hard the task is. Not in use for now but put in track.
+TODO
+
+- difficulty: how hard the task is. Not in use for now but put in track.
 
 #### Event
 
@@ -119,9 +121,12 @@ See [terms](#Terms).
 Properties
 
 - Id: don't need a name
-- task ref
+- taskId: a foreign key to Task
 - start time: index it so that building a report is efficient
 - end time: index it so that if it is null, it is the current on going event.
+
+TODO
+
 - rate of efficiency
 - diary ref: link to a diary. Can use this to build a calendar view to see what event occurs on which date.
 
