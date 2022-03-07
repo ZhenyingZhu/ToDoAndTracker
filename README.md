@@ -70,7 +70,17 @@ At the bottom there is a text box for write dairy.
 
 #### User
 
-**TODO**
+Can just reuse identity user from ASP.NET Core
+
+Properties
+
+- id
+- username
+- firstName
+- lastName
+- email
+- password
+- userStatus
 
 #### Project
 
@@ -84,7 +94,7 @@ Properties
 - deadline date
 - project note: a link
 - tasks: an array ref to Task
-- tags: ref to Tag. Tag is a class because when assign a tag to a project, we want to easily select from a list of tags
+- tags: ref to Tag. Tag is a class because when assign a tag to a project, we want to easily select from a list of tags. Searchs all start from projects
 - category: (work, household, SelfImprove, health, leisure)
 - involvedUsers: an array of userIds as foreign keys. Not use User ref as users are probably already created
 - isArchieved: whether to archieve the project so it doesn't appear
@@ -99,8 +109,8 @@ Properties
 
 - id
 - name
-- projectId: a foreign key to Project. Why not create it as a ref, because when create task the project would probably already created.
-- priority: notAnalysed, high, medium, low. When sort, notAnalysed should show first, as it would be highest priority.
+- projectIds: an array of foreign keys to Project. Why not create it as a ref, because when create task the project would probably already created. Why it is an array because some tasks can belong to multiple different projects. **TODO**: make sure inserting a task to another project also updates the project tasks list
+- priority: notAnalysed, high, medium, low. When sort, notAnalysed should show first, as it would be highest priority
 - step num: used to sort tasks in a project
 - expected start time: a timestamp
 - expected finish time: this is when the task must done. By default is the EOD of the start time.
