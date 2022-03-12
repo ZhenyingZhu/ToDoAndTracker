@@ -41,7 +41,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Project'
         401:
-          description: not allow to create the project
+          description: not allow to get projects
           content: {}
       security:
       - todotracker_auth:
@@ -125,7 +125,7 @@ paths:
     put:
       tags:
       - project
-      summary: Updates a project with form data
+      summary: Updates a project with form data. Can add a task
       operationId: updateProject
       parameters:
       - name: api_key
@@ -196,6 +196,69 @@ paths:
         - read:projects
       - api_key: []
 
+
+  /tasks:
+    get:
+      tags:
+      - task
+      summary: Get all the tasks the user involves in
+      operationId: getTasks
+      parameters:
+      - name: api_key
+        in: header
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        401:
+          description: not allow to get tasks
+          content: {}
+      security:
+      - todotracker_auth:
+        - read:projects
+      - api_key: []
+    post:
+      tags:
+      - task
+      summary: Add a new task
+      operationId: addTask
+      parameters:
+      - name: api_key
+        in: header
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+        required: true
+      responses:
+        201:
+          description: successfully create the task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        400:
+          description: fail to create the task
+          content: {}
+        401:
+          description: not allow to create the task
+          content: {}
+      security:
+      - todotracker_auth:
+        - write:projects
+        - read:projects
+      - api_key: []
+      x-codegen-request-body-name: body
 
   /pet:
     put:
