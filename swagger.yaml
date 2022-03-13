@@ -41,8 +41,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Project'
         401:
-          description: not allow to get projects
-          content: {}
+          $ref: "#/components/responses/Unauthorized"
       security:
       - todotracker_auth:
         - read:projects
@@ -74,8 +73,7 @@ paths:
           description: fail to create the project
           content: {}
         401:
-          description: not allow to create the project
-          content: {}
+          $ref: "#/components/responses/Unauthorized"
       security:
       - todotracker_auth:
         - write:projects
@@ -112,12 +110,10 @@ paths:
         400:
           description: Invalid ID supplied
           content: {}
-        404:
-          description: Project not found
-          content: {}
         401:
-          description: not allow to get project
-          content: {}
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
       security:
       - todotracker_auth:
         - read:projects
@@ -134,7 +130,7 @@ paths:
           type: string
       - name: pid
         in: path
-        description: ID of project that needs to be updated
+        description: ID of the project that needs to be updated
         required: true
         schema:
           type: integer
@@ -153,11 +149,9 @@ paths:
           description: Invalid input
           content: {}
         401:
-          description: not allow to get project
-          content: {}
+          $ref: "#/components/responses/UnauthorizedError"
         404:
-          description: Project not found
-          content: {}
+          $ref: "#/components/responses/NotFound"
       security:
       - todotracker_auth:
         - write:projects
@@ -185,11 +179,9 @@ paths:
           description: Invalid ID supplied
           content: {}
         401:
-          description: not allow to get project
-          content: {}
+          $ref: "#/components/responses/UnauthorizedError"
         404:
-          description: Pet not found
-          content: {}
+          $ref: "#/components/responses/NotFound"
       security:
       - todotracker_auth:
         - write:projects
@@ -218,8 +210,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Task'
         401:
-          description: not allow to get tasks
-          content: {}
+          $ref: "#/components/responses/UnauthorizedError"
       security:
       - todotracker_auth:
         - read:projects
@@ -251,8 +242,7 @@ paths:
           description: fail to create the task
           content: {}
         401:
-          description: not allow to create the task
-          content: {}
+          $ref: "#/components/responses/UnauthorizedError"
       security:
       - todotracker_auth:
         - write:projects
@@ -985,16 +975,16 @@ components:
           type: string
       xml:
         name: Tag
-    ApiResponse:
+    Error:
       type: object
       properties:
         code:
-          type: integer
-          format: int32
-        type:
           type: string
         message:
           type: string
+      required:
+        - code
+        - message
 
     Order:
       type: object
@@ -1070,7 +1060,30 @@ components:
           - sold
       xml:
         name: Pet
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
 
+  responses:
+    Unauthorized:
+      description: API key is missing or invalid
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
 
   securitySchemes:
     todotracker_auth:
