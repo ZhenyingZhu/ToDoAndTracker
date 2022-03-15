@@ -149,7 +149,7 @@ paths:
           description: Invalid input
           content: {}
         401:
-          $ref: "#/components/responses/UnauthorizedError"
+          $ref: "#/components/responses/Unauthorized"
         404:
           $ref: "#/components/responses/NotFound"
       security:
@@ -179,7 +179,7 @@ paths:
           description: Invalid ID supplied
           content: {}
         401:
-          $ref: "#/components/responses/UnauthorizedError"
+          $ref: "#/components/responses/Unauthorized"
         404:
           $ref: "#/components/responses/NotFound"
       security:
@@ -210,7 +210,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Task'
         401:
-          $ref: "#/components/responses/UnauthorizedError"
+          $ref: "#/components/responses/Unauthorized"
       security:
       - todotracker_auth:
         - read:projects
@@ -242,13 +242,120 @@ paths:
           description: fail to create the task
           content: {}
         401:
-          $ref: "#/components/responses/UnauthorizedError"
+          $ref: "#/components/responses/Unauthorized"
       security:
       - todotracker_auth:
         - write:projects
         - read:projects
       - api_key: []
       x-codegen-request-body-name: body
+
+  /tasks/{tid}:
+    get:
+      tags:
+      - task
+      summary: Find task by ID
+      description: Returns a single task
+      operationId: getTaskById
+      parameters:
+      - name: api_key
+        in: header
+        schema:
+          type: string
+      - name: tid
+        in: path
+        description: ID of task to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+      security:
+      - todotracker_auth:
+        - read:projects
+      - api_key: []
+    put:
+      tags:
+      - task
+      summary: Updates a task with form data
+      operationId: updateTask
+      parameters:
+      - name: api_key
+        in: header
+        schema:
+          type: string
+      - name: tid
+        in: path
+        description: ID of the task that needs to be updated
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+        required: true
+      responses:
+        204:
+          description: successful operation
+          content: {}
+        400:
+          description: Invalid input
+          content: {}
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+      security:
+      - todotracker_auth:
+        - write:projects
+        - read:projects
+      - api_key: []
+    delete:
+      tags:
+      - task
+      summary: Deletes a task
+      operationId: deleteTask
+      parameters:
+      - name: api_key
+        in: header
+        schema:
+          type: string
+      - name: tid
+        in: path
+        description: Task id to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
+      security:
+      - todotracker_auth:
+        - write:projects
+        - read:projects
+      - api_key: []
 
   /pet:
     put:
