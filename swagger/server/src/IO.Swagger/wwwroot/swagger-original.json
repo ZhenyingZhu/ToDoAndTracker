@@ -1,0 +1,2199 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "ToDo and Tracker",
+    "description" : "For this sample, you can use the api key `special-key` to test the authorization filters.",
+    "version" : "0.0.1"
+  },
+  "externalDocs" : {
+    "description" : "A ToDo app with a time tracker.",
+    "url" : "https://github.com/ZhenyingZhu/ToDoAndTracker/blob/master/README.md"
+  },
+  "servers" : [ {
+    "url" : "https://zhenying.io/api/beta"
+  } ],
+  "tags" : [ {
+    "name" : "project",
+    "description" : "A work that can be one-time or recurring"
+  }, {
+    "name" : "task",
+    "description" : "A step in the project"
+  }, {
+    "name" : "event",
+    "description" : "When working on a task"
+  }, {
+    "name" : "user",
+    "description" : "Operations about user"
+  } ],
+  "paths" : {
+    "/projects" : {
+      "get" : {
+        "tags" : [ "project" ],
+        "summary" : "Get all the projects the user involves in",
+        "operationId" : "getProjects",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Project"
+                  },
+                  "x-content-type" : "application/json"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "project" ],
+        "summary" : "Add a new project",
+        "operationId" : "addProject",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Project"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "successfully create the project",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "fail to create the project",
+            "content" : { }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "write:projects", "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ],
+        "x-codegen-request-body-name" : "body"
+      }
+    },
+    "/projects/{pid}" : {
+      "get" : {
+        "tags" : [ "project" ],
+        "summary" : "Find project by ID",
+        "description" : "Returns a single project",
+        "operationId" : "getProjectById",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "pid",
+          "in" : "path",
+          "description" : "ID of project to return",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "The specified resource was not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "project" ],
+        "summary" : "Updates a project with form data. Can add a task",
+        "operationId" : "updateProject",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "pid",
+          "in" : "path",
+          "description" : "ID of the project that needs to be updated",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Project"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "successful operation",
+            "content" : { }
+          },
+          "400" : {
+            "description" : "Invalid input",
+            "content" : { }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "The specified resource was not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "write:projects", "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "project" ],
+        "summary" : "Deletes a project",
+        "operationId" : "deleteProject",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "pid",
+          "in" : "path",
+          "description" : "Project id to delete",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "The specified resource was not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "write:projects", "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ]
+      }
+    },
+    "/tasks" : {
+      "get" : {
+        "tags" : [ "task" ],
+        "summary" : "Get all the tasks the user involves in",
+        "operationId" : "getTasks",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Task"
+                  },
+                  "x-content-type" : "application/json"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "task" ],
+        "summary" : "Add a new task",
+        "operationId" : "addTask",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Task"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "successfully create the task",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "fail to create the task",
+            "content" : { }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "write:projects", "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ],
+        "x-codegen-request-body-name" : "body"
+      }
+    },
+    "/tasks/{tid}" : {
+      "get" : {
+        "tags" : [ "task" ],
+        "summary" : "Find task by ID",
+        "description" : "Returns a single task",
+        "operationId" : "getTaskById",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "tid",
+          "in" : "path",
+          "description" : "ID of task to return",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "The specified resource was not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "task" ],
+        "summary" : "Updates a task with form data. Can be used to add an event",
+        "operationId" : "updateTask",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "tid",
+          "in" : "path",
+          "description" : "ID of the task that needs to be updated",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Task"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "successful operation",
+            "content" : { }
+          },
+          "400" : {
+            "description" : "Invalid input",
+            "content" : { }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "The specified resource was not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "write:projects", "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "task" ],
+        "summary" : "Deletes a task",
+        "operationId" : "deleteTask",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "tid",
+          "in" : "path",
+          "description" : "Task id to delete",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "The specified resource was not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "write:projects", "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ]
+      }
+    },
+    "/tasks/{tid}/events/{eid}" : {
+      "get" : {
+        "tags" : [ "event" ],
+        "summary" : "Get an event by id",
+        "operationId" : "getEventById",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "tid",
+          "in" : "path",
+          "description" : "ID of the task to return event",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "eid",
+          "in" : "path",
+          "description" : "ID of the event to return",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "The specified resource was not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "event" ],
+        "summary" : "Update an event by id",
+        "operationId" : "updateEvent",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "tid",
+          "in" : "path",
+          "description" : "ID of the task to return event",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "eid",
+          "in" : "path",
+          "description" : "ID of the event to return",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "The specified resource was not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "write:projects", "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "event" ],
+        "summary" : "Deletes an event",
+        "operationId" : "deleteEvent",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "tid",
+          "in" : "path",
+          "description" : "Task id to delete",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "eid",
+          "in" : "path",
+          "description" : "ID of the event to return",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "401" : {
+            "description" : "API key is missing or invalid",
+            "headers" : {
+              "WWW_Authenticate" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "The specified resource was not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todotracker_auth" : [ "write:projects", "read:projects" ]
+        }, {
+          "api_key" : [ ]
+        } ]
+      }
+    },
+    "/pet" : {
+      "put" : {
+        "tags" : [ "pet" ],
+        "summary" : "Update an existing pet",
+        "operationId" : "updatePet",
+        "requestBody" : {
+          "description" : "Pet object that needs to be added to the store",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Pet"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Pet"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "404" : {
+            "description" : "Pet not found",
+            "content" : { }
+          },
+          "405" : {
+            "description" : "Validation exception",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:pets", "read:pets" ]
+        } ],
+        "x-codegen-request-body-name" : "body"
+      },
+      "post" : {
+        "tags" : [ "pet" ],
+        "summary" : "Add a new pet to the store",
+        "operationId" : "addPet",
+        "requestBody" : {
+          "description" : "Pet object that needs to be added to the store",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Pet"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Pet"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "405" : {
+            "description" : "Invalid input",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:pets", "read:pets" ]
+        } ],
+        "x-codegen-request-body-name" : "body"
+      }
+    },
+    "/pet/findByStatus" : {
+      "get" : {
+        "tags" : [ "pet" ],
+        "summary" : "Finds Pets by status",
+        "description" : "Multiple status values can be provided with comma separated strings",
+        "operationId" : "findPetsByStatus",
+        "parameters" : [ {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Status values that need to be considered for filter",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "available", "pending", "sold" ],
+              "default" : "available"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Pet"
+                  },
+                  "x-content-type" : "application/xml"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid status value",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:pets", "read:pets" ]
+        } ]
+      }
+    },
+    "/pet/findByTags" : {
+      "get" : {
+        "tags" : [ "pet" ],
+        "summary" : "Finds Pets by tags",
+        "description" : "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing.",
+        "operationId" : "findPetsByTags",
+        "parameters" : [ {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "Tags to filter by",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Pet"
+                  },
+                  "x-content-type" : "application/xml"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid tag value",
+            "content" : { }
+          }
+        },
+        "deprecated" : true,
+        "security" : [ {
+          "petstore_auth" : [ "write:pets", "read:pets" ]
+        } ]
+      }
+    },
+    "/pet/{petId}" : {
+      "get" : {
+        "tags" : [ "pet" ],
+        "summary" : "Find pet by ID",
+        "description" : "Returns a single pet",
+        "operationId" : "getPetById",
+        "parameters" : [ {
+          "name" : "petId",
+          "in" : "path",
+          "description" : "ID of pet to return",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Pet"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Pet"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "404" : {
+            "description" : "Pet not found",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "pet" ],
+        "summary" : "Updates a pet in the store with form data",
+        "operationId" : "updatePetWithForm",
+        "parameters" : [ {
+          "name" : "petId",
+          "in" : "path",
+          "description" : "ID of pet that needs to be updated",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/pet_petId_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "405" : {
+            "description" : "Invalid input",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:pets", "read:pets" ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "pet" ],
+        "summary" : "Deletes a pet",
+        "operationId" : "deletePet",
+        "parameters" : [ {
+          "name" : "api_key",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "petId",
+          "in" : "path",
+          "description" : "Pet id to delete",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "404" : {
+            "description" : "Pet not found",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:pets", "read:pets" ]
+        } ]
+      }
+    },
+    "/pet/{petId}/uploadImage" : {
+      "post" : {
+        "tags" : [ "pet" ],
+        "summary" : "uploads an image",
+        "operationId" : "uploadFile",
+        "parameters" : [ {
+          "name" : "petId",
+          "in" : "path",
+          "description" : "ID of pet to update",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/petId_uploadImage_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "petstore_auth" : [ "write:pets", "read:pets" ]
+        } ]
+      }
+    },
+    "/store/inventory" : {
+      "get" : {
+        "tags" : [ "store" ],
+        "summary" : "Returns pet inventories by status",
+        "description" : "Returns a map of status codes to quantities",
+        "operationId" : "getInventory",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "integer",
+                    "format" : "int32"
+                  },
+                  "x-content-type" : "application/json"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "api_key" : [ ]
+        } ]
+      }
+    },
+    "/store/order" : {
+      "post" : {
+        "tags" : [ "store" ],
+        "summary" : "Place an order for a pet",
+        "operationId" : "placeOrder",
+        "requestBody" : {
+          "description" : "order placed for purchasing the pet",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Order"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Order"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid Order",
+            "content" : { }
+          }
+        },
+        "x-codegen-request-body-name" : "body"
+      }
+    },
+    "/store/order/{orderId}" : {
+      "get" : {
+        "tags" : [ "store" ],
+        "summary" : "Find purchase order by ID",
+        "description" : "For valid response try integer IDs with value >= 1 and <= 10.         Other values will generated exceptions",
+        "operationId" : "getOrderById",
+        "parameters" : [ {
+          "name" : "orderId",
+          "in" : "path",
+          "description" : "ID of pet that needs to be fetched",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "maximum" : 10,
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Order"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "404" : {
+            "description" : "Order not found",
+            "content" : { }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "store" ],
+        "summary" : "Delete purchase order by ID",
+        "description" : "For valid response try integer IDs with positive integer value.         Negative or non-integer values will generate API errors",
+        "operationId" : "deleteOrder",
+        "parameters" : [ {
+          "name" : "orderId",
+          "in" : "path",
+          "description" : "ID of the order that needs to be deleted",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "404" : {
+            "description" : "Order not found",
+            "content" : { }
+          }
+        }
+      }
+    },
+    "/user" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "Create user",
+        "description" : "This can only be done by the logged in user.",
+        "operationId" : "createUser",
+        "requestBody" : {
+          "description" : "Created user object",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "default" : {
+            "description" : "successful operation",
+            "content" : { }
+          }
+        },
+        "x-codegen-request-body-name" : "body"
+      }
+    },
+    "/user/createWithArray" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "Creates list of users with given input array",
+        "operationId" : "createUsersWithArrayInput",
+        "requestBody" : {
+          "description" : "List of user object",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "default" : {
+            "description" : "successful operation",
+            "content" : { }
+          }
+        },
+        "x-codegen-request-body-name" : "body"
+      }
+    },
+    "/user/createWithList" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "Creates list of users with given input array",
+        "operationId" : "createUsersWithListInput",
+        "requestBody" : {
+          "description" : "List of user object",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "default" : {
+            "description" : "successful operation",
+            "content" : { }
+          }
+        },
+        "x-codegen-request-body-name" : "body"
+      }
+    },
+    "/user/login" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Logs user into the system",
+        "operationId" : "loginUser",
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "query",
+          "description" : "The user name for login",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "password",
+          "in" : "query",
+          "description" : "The password for login in clear text",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "headers" : {
+              "X-Rate-Limit" : {
+                "description" : "calls per hour allowed by the user",
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                }
+              },
+              "X-Expires-After" : {
+                "description" : "date in UTC when token expires",
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "format" : "date-time"
+                }
+              }
+            },
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "string",
+                  "x-content-type" : "application/xml"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid username/password supplied",
+            "content" : { }
+          }
+        }
+      }
+    },
+    "/user/logout" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Logs out current logged in user session",
+        "operationId" : "logoutUser",
+        "responses" : {
+          "default" : {
+            "description" : "successful operation",
+            "content" : { }
+          }
+        }
+      }
+    },
+    "/user/{username}" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Get user by user name",
+        "operationId" : "getUserByName",
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "path",
+          "description" : "The name that needs to be fetched. Use user1 for testing. ",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid username supplied",
+            "content" : { }
+          },
+          "404" : {
+            "description" : "User not found",
+            "content" : { }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "Updated user",
+        "description" : "This can only be done by the logged in user.",
+        "operationId" : "updateUser",
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "path",
+          "description" : "name that need to be updated",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "Updated user object",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "400" : {
+            "description" : "Invalid user supplied",
+            "content" : { }
+          },
+          "404" : {
+            "description" : "User not found",
+            "content" : { }
+          }
+        },
+        "x-codegen-request-body-name" : "body"
+      },
+      "delete" : {
+        "tags" : [ "user" ],
+        "summary" : "Delete user",
+        "description" : "This can only be done by the logged in user.",
+        "operationId" : "deleteUser",
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "path",
+          "description" : "The name that needs to be deleted",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid username supplied",
+            "content" : { }
+          },
+          "404" : {
+            "description" : "User not found",
+            "content" : { }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Project" : {
+        "required" : [ "name" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "createDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "deadlineDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "projectNote" : {
+            "type" : "string"
+          },
+          "tasks" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "task",
+              "wrapped" : true
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/Task"
+            }
+          },
+          "tags" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "tag",
+              "wrapped" : true
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/Tag"
+            }
+          },
+          "category" : {
+            "type" : "string",
+            "enum" : [ "work", "household", "selfImprove", "health", "leisure" ]
+          },
+          "involvedUsers" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "userId",
+              "wrapped" : true
+            },
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          },
+          "isArchieved" : {
+            "type" : "boolean"
+          }
+        },
+        "example" : {
+          "isArchieved" : true,
+          "projectNote" : "projectNote",
+          "deadlineDate" : "2000-01-23T04:56:07.000+00:00",
+          "name" : "name",
+          "id" : 0,
+          "category" : "work",
+          "involvedUsers" : [ 3, 3 ],
+          "tasks" : [ {
+            "recurRule" : "recurRule",
+            "expectedStartTime" : "2000-01-23T04:56:07.000+00:00",
+            "expectedTimeDuration" : "P1D",
+            "name" : "name",
+            "stepNum" : 5,
+            "id" : 6,
+            "projectIds" : [ 1, 1 ],
+            "state" : "queued",
+            "priority" : "notAnalysed",
+            "expectedFinishTime" : "2000-01-23T04:56:07.000+00:00",
+            "assignedUser" : 7,
+            "events" : [ {
+              "startTime" : "2000-01-23T04:56:07.000+00:00",
+              "id" : 5,
+              "endTime" : "2000-01-23T04:56:07.000+00:00",
+              "taskId" : 2
+            }, {
+              "startTime" : "2000-01-23T04:56:07.000+00:00",
+              "id" : 5,
+              "endTime" : "2000-01-23T04:56:07.000+00:00",
+              "taskId" : 2
+            } ]
+          }, {
+            "recurRule" : "recurRule",
+            "expectedStartTime" : "2000-01-23T04:56:07.000+00:00",
+            "expectedTimeDuration" : "P1D",
+            "name" : "name",
+            "stepNum" : 5,
+            "id" : 6,
+            "projectIds" : [ 1, 1 ],
+            "state" : "queued",
+            "priority" : "notAnalysed",
+            "expectedFinishTime" : "2000-01-23T04:56:07.000+00:00",
+            "assignedUser" : 7,
+            "events" : [ {
+              "startTime" : "2000-01-23T04:56:07.000+00:00",
+              "id" : 5,
+              "endTime" : "2000-01-23T04:56:07.000+00:00",
+              "taskId" : 2
+            }, {
+              "startTime" : "2000-01-23T04:56:07.000+00:00",
+              "id" : 5,
+              "endTime" : "2000-01-23T04:56:07.000+00:00",
+              "taskId" : 2
+            } ]
+          } ],
+          "createDate" : "2000-01-23T04:56:07.000+00:00",
+          "tags" : [ {
+            "name" : "name",
+            "id" : 9
+          }, {
+            "name" : "name",
+            "id" : 9
+          } ]
+        }
+      },
+      "Task" : {
+        "required" : [ "name" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "projectIds" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "projectId",
+              "wrapped" : true
+            },
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          },
+          "priority" : {
+            "type" : "string",
+            "enum" : [ "notAnalysed", "high", "medium", "low" ]
+          },
+          "stepNum" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "expectedStartTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "expectedFinishTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "expectedTimeDuration" : {
+            "type" : "string",
+            "description" : "[ISO_8601](https://en.wikipedia.org/wiki/ISO_8601#Durations)",
+            "format" : "iso8601",
+            "example" : "P1D"
+          },
+          "state" : {
+            "type" : "string",
+            "enum" : [ "queued", "started", "blocked", "completed", "abandoned" ]
+          },
+          "recurRule" : {
+            "type" : "string"
+          },
+          "events" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "event",
+              "wrapped" : true
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/Event"
+            }
+          },
+          "assignedUser" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        },
+        "example" : {
+          "recurRule" : "recurRule",
+          "expectedStartTime" : "2000-01-23T04:56:07.000+00:00",
+          "expectedTimeDuration" : "P1D",
+          "name" : "name",
+          "stepNum" : 5,
+          "id" : 6,
+          "projectIds" : [ 1, 1 ],
+          "state" : "queued",
+          "priority" : "notAnalysed",
+          "expectedFinishTime" : "2000-01-23T04:56:07.000+00:00",
+          "assignedUser" : 7,
+          "events" : [ {
+            "startTime" : "2000-01-23T04:56:07.000+00:00",
+            "id" : 5,
+            "endTime" : "2000-01-23T04:56:07.000+00:00",
+            "taskId" : 2
+          }, {
+            "startTime" : "2000-01-23T04:56:07.000+00:00",
+            "id" : 5,
+            "endTime" : "2000-01-23T04:56:07.000+00:00",
+            "taskId" : 2
+          } ]
+        }
+      },
+      "Event" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "taskId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "startTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "endTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        },
+        "example" : {
+          "startTime" : "2000-01-23T04:56:07.000+00:00",
+          "id" : 5,
+          "endTime" : "2000-01-23T04:56:07.000+00:00",
+          "taskId" : 2
+        }
+      },
+      "User" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "username" : {
+            "type" : "string"
+          },
+          "firstName" : {
+            "type" : "string"
+          },
+          "lastName" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          },
+          "phone" : {
+            "type" : "string"
+          },
+          "userStatus" : {
+            "type" : "integer",
+            "description" : "User Status",
+            "format" : "int32"
+          }
+        },
+        "example" : {
+          "firstName" : "firstName",
+          "lastName" : "lastName",
+          "password" : "password",
+          "userStatus" : 6,
+          "phone" : "phone",
+          "id" : 0,
+          "email" : "email",
+          "username" : "username"
+        },
+        "xml" : {
+          "name" : "User"
+        }
+      },
+      "Tag" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "example" : {
+          "name" : "name",
+          "id" : 9
+        },
+        "xml" : {
+          "name" : "Tag"
+        }
+      },
+      "Error" : {
+        "required" : [ "code", "message" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Order" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "petId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "quantity" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "shipDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Order Status",
+            "enum" : [ "placed", "approved", "delivered" ]
+          },
+          "complete" : {
+            "type" : "boolean",
+            "default" : false
+          }
+        },
+        "example" : {
+          "petId" : 6,
+          "quantity" : 1,
+          "id" : 0,
+          "shipDate" : "2000-01-23T04:56:07.000+00:00",
+          "complete" : false,
+          "status" : "placed"
+        },
+        "xml" : {
+          "name" : "Order"
+        }
+      },
+      "Category" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "example" : {
+          "name" : "name",
+          "id" : 6
+        },
+        "xml" : {
+          "name" : "Category"
+        }
+      },
+      "Pet" : {
+        "required" : [ "name", "photoUrls" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "category" : {
+            "$ref" : "#/components/schemas/Category"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "doggie"
+          },
+          "photoUrls" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "photoUrl",
+              "wrapped" : true
+            },
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "tags" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "tag",
+              "wrapped" : true
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/Tag"
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "pet status in the store",
+            "enum" : [ "available", "pending", "sold" ]
+          }
+        },
+        "example" : {
+          "photoUrls" : [ "photoUrls", "photoUrls" ],
+          "name" : "doggie",
+          "id" : 0,
+          "category" : {
+            "name" : "name",
+            "id" : 6
+          },
+          "tags" : [ {
+            "name" : "name",
+            "id" : 9
+          }, {
+            "name" : "name",
+            "id" : 9
+          } ],
+          "status" : "available"
+        },
+        "xml" : {
+          "name" : "Pet"
+        }
+      },
+      "ApiResponse" : {
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        },
+        "example" : {
+          "code" : 0,
+          "type" : "type",
+          "message" : "message"
+        }
+      },
+      "pet_petId_body" : {
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "Updated name of the pet"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Updated status of the pet"
+          }
+        }
+      },
+      "petId_uploadImage_body" : {
+        "properties" : {
+          "additionalMetadata" : {
+            "type" : "string",
+            "description" : "Additional data to pass to server"
+          },
+          "file" : {
+            "type" : "string",
+            "description" : "file to upload",
+            "format" : "binary"
+          }
+        }
+      }
+    },
+    "responses" : {
+      "Unauthorized" : {
+        "description" : "API key is missing or invalid",
+        "headers" : {
+          "WWW_Authenticate" : {
+            "style" : "simple",
+            "explode" : false,
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "NotFound" : {
+        "description" : "The specified resource was not found",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "todotracker_auth" : {
+        "type" : "oauth2",
+        "flows" : {
+          "implicit" : {
+            "authorizationUrl" : "http://todotracker.zhenying.io/oauth/dialog",
+            "scopes" : {
+              "write:projects" : "modify projects",
+              "read:projects" : "read projects"
+            }
+          }
+        }
+      },
+      "petstore_auth" : {
+        "type" : "oauth2",
+        "flows" : {
+          "implicit" : {
+            "authorizationUrl" : "http://petstore.zhenying.io/oauth/dialog",
+            "scopes" : {
+              "write:pets" : "modify pets in your account",
+              "read:pets" : "read your pets"
+            }
+          }
+        }
+      },
+      "api_key" : {
+        "type" : "apiKey",
+        "name" : "api_key",
+        "in" : "header"
+      }
+    }
+  }
+}

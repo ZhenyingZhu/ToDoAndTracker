@@ -400,7 +400,7 @@ paths:
       tags:
       - event
       summary: Update an event by id
-      operationId: getEventById
+      operationId: updateEvent
       parameters:
       - name: api_key
         in: header
