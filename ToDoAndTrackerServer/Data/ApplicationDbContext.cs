@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ToDoAndTrackerServer.Areas.ToDo.Models;
 
 namespace ToDoAndTrackerServer.Data
 {
@@ -9,5 +10,6 @@ namespace ToDoAndTrackerServer.Data
             : base(options)
         {
         }
+        public DbSet<Project> Project { get; set; } = null!;
     }
 }

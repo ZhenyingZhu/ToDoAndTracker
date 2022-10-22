@@ -36,6 +36,15 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// zhenying: Added for MVC area.
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+});
+
 app.MapRazorPages();
 
 app.Run();
