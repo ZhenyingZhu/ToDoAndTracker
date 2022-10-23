@@ -39,9 +39,20 @@ app.UseAuthorization();
 // zhenying: Added for MVC area.
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapAreaControllerRoute(
+        name: "ToDo",
+        areaName: "ToDo",
+        pattern: "ToDo/{controller=Projects}/{action=Index}"
+    );
+
     endpoints.MapControllerRoute(
       name: "areas",
       pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapControllerRoute(
+      name: "deafault",
+      pattern: "{controller=Home}/{action=Index}/{id?}"
     );
 });
 
