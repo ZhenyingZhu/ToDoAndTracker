@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ToDoAndTrackerServer.Areas.ToDo.Models;
 using ToDoAndTrackerServer.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddScoped<TodoRepository>();
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
@@ -35,6 +39,13 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// zhenying: set the ClaimPricipal.Current
+app.Use((context, next) =>
+{
+    Thread.CurrentPrincipal = context.User;
+    return next(context);
+});
 
 // zhenying: Added for MVC area.
 app.UseEndpoints(endpoints =>

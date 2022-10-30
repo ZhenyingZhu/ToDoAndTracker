@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ToDoAndTrackerServer.Areas.ToDo.Models.Project>
+﻿@model IEnumerable<ToDoAndTrackerServer.Areas.ToDo.Models.ProjectDTO>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,9 +14,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.OwnerId)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th></th>
@@ -25,9 +22,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OwnerId)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
