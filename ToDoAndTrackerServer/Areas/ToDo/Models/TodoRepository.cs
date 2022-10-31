@@ -67,6 +67,8 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
                 throw new ObjectNotFoundException($"Project {projectDTO.Id} doesn't exist");
             }
 
+            project.Name = projectDTO.Name;
+
             _context.Entry(project).State = EntityState.Modified;
 
             try
