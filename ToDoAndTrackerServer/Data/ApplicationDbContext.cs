@@ -10,6 +10,6 @@ namespace ToDoAndTrackerServer.Data
             : base(options)
         {
         }
-        public DbSet<Project> Project { get; set; } = null!;
+        public DbSet<Project> Projects { get; set; } = null!;
     }
 }

@@ -28,7 +28,7 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
                 OwnerId = await GetUserIdAsync(),
                 Name = projectDTO.Name
             };
-            _context.Project.Add(project);
+            _context.Projects.Add(project);
             await _context.SaveChangesAsync();
 
             return new ProjectDTO(project);
@@ -96,20 +96,20 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
             // catch exception: nted
             // Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes.See the inner exception for details.
             // Microsoft.Data.SqlClient.SqlException(0x80131904): The DELETE statement conflicted with the REFERENCE constraint "FK_TodoItems_Projects_ProjectId".The conflict occurred in database "TodoApi", table "dbo.TodoItems", column 'ProjectId'.
-            _context.Project.Remove(project);
+            _context.Projects.Remove(project);
             await _context.SaveChangesAsync();
         }
 
         private IQueryable<Project> GetProjectsQuery(string userId)
         {
-            return _context.Project
+            return _context.Projects
                 .Where(p => p.OwnerId == userId);
             // .Include(p => p.TodoItems)
         }
 
         private IQueryable<Project> GetProjectByIdQuery(int id, string userId)
         {
-            return _context.Project
+            return _context.Projects
                 .Where(p => p.Id == id)
                 .Where(p => p.OwnerId == userId);
                 // .Include(p => p.TodoItems)
@@ -117,7 +117,7 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
 
         private bool ProjectExists(int id, string userId)
         {
-            return _context.Project.Any(p => p.Id == id && p.OwnerId == userId);
+            return _context.Projects.Any(p => p.Id == id && p.OwnerId == userId);
         }
 
         #endregion
