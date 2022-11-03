@@ -12,12 +12,14 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<ApplicationDbContext> _logger;
+        private string _userId;
 
         public TodoRepository(ApplicationDbContext context, UserManager<IdentityUser> userManager, ILogger<ApplicationDbContext> logger)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
+            _userId = GetUserIdAsync().Result;
         }
 
         #region Project
@@ -25,7 +27,7 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         {
             Project project = new Project()
             {
-                OwnerId = await GetUserIdAsync(),
+                OwnerId = _userId,
                 Name = projectDTO.Name
             };
             _context.Projects.Add(project);
@@ -36,21 +38,17 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
 
         public async Task<List<ProjectDTO>> GetProjectsAsync()
         {
-            string userId = await GetUserIdAsync();
-
             // Use the DTO to avoid getting TodoItems then Projects in a loop.
-            return await GetProjectsQuery(userId)
+            return await GetProjectsQuery()
                 .Select(p => new ProjectDTO(p))
                 .ToListAsync();
         }
 
         public async Task<ProjectDTO?> GetProjectByIdAsync(int id)
         {
-            string userId = await GetUserIdAsync();
-
             // Cannot use FindAsync because Include(TodoItems) make the return not Project
             // var project = await _context.Projects.FindAsync(id);
-            var project = await GetProjectByIdQuery(id, userId)
+            var project = await GetProjectByIdQuery(id)
                 .Select(p => new ProjectDTO(p))
                 .FirstOrDefaultAsync();
             return project;
@@ -58,9 +56,7 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
 
         public async Task UpdateProjectAsync(ProjectDTO projectDTO)
         {
-            string userId = await GetUserIdAsync();
-
-            var project = await GetProjectByIdQuery(projectDTO.Id, userId)
+            var project = await GetProjectByIdQuery(projectDTO.Id)
                 .FirstOrDefaultAsync();
             if (project == null)
             {
@@ -75,7 +71,7 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DBConcurrencyException) when (!ProjectExists(project.Id, userId))
+            catch (DBConcurrencyException) when (!ProjectExists(project.Id))
             {
                 throw new ObjectNotFoundException($"Project {project.Id} doesn't exist");
             }
@@ -83,9 +79,7 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
 
         public async Task DeleteProjectAsync(int id)
         {
-            string userId = await GetUserIdAsync();
-
-            var project = await GetProjectByIdQuery(id, userId)
+            var project = await GetProjectByIdQuery(id)
                 .FirstOrDefaultAsync();
             if (project == null)
             {
@@ -100,24 +94,24 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
             await _context.SaveChangesAsync();
         }
 
-        private IQueryable<Project> GetProjectsQuery(string userId)
+        private IQueryable<Project> GetProjectsQuery()
         {
             return _context.Projects
-                .Where(p => p.OwnerId == userId);
+                .Where(p => p.OwnerId == _userId);
             // .Include(p => p.TodoItems)
         }
 
-        private IQueryable<Project> GetProjectByIdQuery(int id, string userId)
+        private IQueryable<Project> GetProjectByIdQuery(int id)
         {
             return _context.Projects
                 .Where(p => p.Id == id)
-                .Where(p => p.OwnerId == userId);
+                .Where(p => p.OwnerId == _userId);
                 // .Include(p => p.TodoItems)
         }
 
-        private bool ProjectExists(int id, string userId)
+        private bool ProjectExists(int id)
         {
-            return _context.Projects.Any(p => p.Id == id && p.OwnerId == userId);
+            return _context.Projects.Any(p => p.Id == id && p.OwnerId == _userId);
         }
 
         #endregion
