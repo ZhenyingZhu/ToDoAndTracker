@@ -13,6 +13,6 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         [Required]
         public string Name { get; set; } = null!;
 
-        public ICollection<Task> TodoItems { get; set; } = null!;
+        public ICollection<Task> Tasks { get; set; } = null!;
     }
 }
