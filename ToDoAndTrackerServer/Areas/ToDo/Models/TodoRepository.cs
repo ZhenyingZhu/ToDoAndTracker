@@ -116,6 +116,18 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
 
         #endregion
 
+        #region Task
+        public async Task<List<TodoTaskDTO>> GetTasksAsync()
+        {
+            return await _context.TodoTasks
+                .Where(t => t.OwnerId == _userId)
+                .Include(t => t.Project)
+                .Select(t => new TodoTaskDTO(t))
+                .ToListAsync();
+        }
+
+        #endregion
+
         #region User
         private async Task<string> GetUserIdAsync()
         {

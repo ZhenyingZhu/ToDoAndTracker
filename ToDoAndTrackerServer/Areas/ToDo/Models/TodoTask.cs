@@ -11,7 +11,7 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         Abandoned,
     }
 
-    public class Task
+    public class TodoTask
     {
         public int Id { get; set; }
 
@@ -26,6 +26,5 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         public Project Project { get; set; } = null!;
 
         public TaskState State { get; set; }
-
     }
 }

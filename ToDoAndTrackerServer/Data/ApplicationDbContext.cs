@@ -11,5 +11,6 @@ namespace ToDoAndTrackerServer.Data
         {
         }
         public DbSet<Project> Projects { get; set; } = null!;
+        public DbSet<TodoTask> TodoTasks { get; set; } = null!;
     }
 }

@@ -1,5 +1,8 @@
-﻿namespace ToDoAndTrackerServer.Areas.ToDo.Models
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace ToDoAndTrackerServer.Areas.ToDo.Models
 {
+    [ModelMetadataType(typeof(Project))]
     public class ProjectDTO
     {
         public int Id { get; set; }

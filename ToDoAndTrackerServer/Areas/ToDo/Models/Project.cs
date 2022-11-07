@@ -7,12 +7,11 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         public int Id { get; set; }
 
         [Required]
-
         public string OwnerId { get; set; } = null!;
 
         [Required]
         public string Name { get; set; } = null!;
 
-        public ICollection<Task> Tasks { get; set; } = null!;
+        public ICollection<TodoTask> Tasks { get; set; } = null!;
     }
 }
