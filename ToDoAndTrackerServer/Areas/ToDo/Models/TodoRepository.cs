@@ -97,35 +97,51 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         private IQueryable<Project> GetProjectsQuery()
         {
             return _context.Projects
-                .Where(p => p.OwnerId == _userId);
-            // .Include(p => p.TodoItems)
+                .Where(p => p.OwnerId == _userId)
+                .Include(p => p.TodoTasks);
         }
 
         private IQueryable<Project> GetProjectByIdQuery(int id)
         {
             return _context.Projects
                 .Where(p => p.Id == id)
-                .Where(p => p.OwnerId == _userId);
-                // .Include(p => p.TodoItems)
+                .Where(p => p.OwnerId == _userId)
+                .Include(p => p.TodoTasks);
         }
 
         private bool ProjectExists(int id)
         {
             return _context.Projects.Any(p => p.Id == id && p.OwnerId == _userId);
         }
-
         #endregion
 
         #region Task
-        public async Task<List<TodoTaskDTO>> GetTasksAsync()
+        public async Task<List<TodoTaskDTO>> GetTodoTasksAsync()
         {
-            return await _context.TodoTasks
-                .Where(t => t.OwnerId == _userId)
-                .Include(t => t.Project)
+            return await GetTodoTasksQuery()
                 .Select(t => new TodoTaskDTO(t))
                 .ToListAsync();
         }
 
+        private IQueryable<TodoTask> GetTodoTasksQuery()
+        {
+            return _context.TodoTasks
+                .Where(t => t.OwnerId == _userId)
+                .Include(t => t.Project);
+        }
+
+        private IQueryable<TodoTask> GetTodoTaskByIdQuery(int id)
+        {
+            return _context.TodoTasks
+                .Where(t => t.Id == id)
+                .Where(t => t.OwnerId == _userId)
+                .Include(t => t.Project);
+        }
+
+        private bool TodoTaskExists(int id)
+        {
+            return _context.TodoTasks.Any(t => t.Id == id && t.OwnerId == _userId);
+        }
         #endregion
 
         #region User
