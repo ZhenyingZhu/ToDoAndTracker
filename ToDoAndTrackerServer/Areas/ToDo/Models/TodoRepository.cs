@@ -123,6 +123,13 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
                 .ToListAsync();
         }
 
+        public async Task<TodoTaskDTO?> GetTodoTaskByIdAsync(int id)
+        {
+            var todoTask = await GetTodoTaskByIdQuery(id)
+                .Select(t => new TodoTaskDTO(t))
+                .FirstOrDefaultAsync();
+        }
+
         private IQueryable<TodoTask> GetTodoTasksQuery()
         {
             return _context.TodoTasks
