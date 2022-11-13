@@ -12,5 +12,6 @@ namespace ToDoAndTrackerServer.Data
         }
         public DbSet<Project> Projects { get; set; } = null!;
         public DbSet<TodoTask> TodoTasks { get; set; } = null!;
+        public DbSet<ToDoAndTrackerServer.Areas.ToDo.Models.TodoTaskDTO> TodoTaskDTO { get; set; }
     }
 }

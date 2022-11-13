@@ -169,6 +169,89 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
                 .FirstOrDefaultAsync();
         }
 
+        public async Task UpdateTodoTaskAsync(TodoTaskDTO updatedTodoTaskDTO)
+        {
+            // Error handling is done here because it is called by JS so cannot handle complicate logics.
+            var existingTodoTask = await GetTodoTaskByIdQuery(updatedTodoTaskDTO.Id)
+                .FirstOrDefaultAsync();
+
+            if (existingTodoTask == null)
+            {
+                throw new ObjectNotFoundException($"Task {updatedTodoTaskDTO.Id} doesn't exist");
+            }
+
+            // Doesn't support move it to a different project. The operation will be done by another API.
+            if (updatedTodoTaskDTO.ProjectId != updatedTodoTaskDTO.ProjectId)
+            {
+                throw new InvalidOperationException($"Cannot update project for Task {updatedTodoTaskDTO.Id}");
+            }
+
+            existingTodoTask.Name = updatedTodoTaskDTO.Name;
+            existingTodoTask.State = updatedTodoTaskDTO.State;
+
+            _context.Entry(existingTodoTask).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException) when (!TodoTaskExists(updatedTodoTaskDTO.Id))
+            {
+                // TodoItem get deleted concurrently.
+                throw new ObjectNotFoundException($"Task {updatedTodoTaskDTO.Id} doesn't exist");
+            }
+        }
+
+        public async Task ChangeTodoTaskProjectAsync(int tid, int pid)
+        {
+            var todoTask = await GetTodoTaskByIdQuery(tid)
+                .FirstOrDefaultAsync();
+            if (todoTask == null)
+            {
+                throw new ObjectNotFoundException($"Task {tid} doesn't exist");
+            }
+
+            if (!ProjectExists(pid))
+            {
+                throw new ObjectNotFoundException($"Project {pid} doesn't exist");
+            }
+
+            todoTask.ProjectId = pid;
+            _context.Entry(todoTask).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DBConcurrencyException)
+            {
+                if (!TodoTaskExists(tid))
+                {
+                    throw new ObjectNotFoundException($"Task {tid} doesn't exist");
+                }
+
+                if (!ProjectExists(pid))
+                {
+                    throw new ObjectNotFoundException($"Project {pid} doesn't exist");
+                }
+            }
+        }
+
+        public async Task DeleteTodoTaskAsync(int id)
+        {
+            // No need to remove it from project, because the project table doesn't record the reference.
+            var todoTask = await GetTodoTaskByIdQuery(id)
+                .FirstOrDefaultAsync();
+
+            if (todoTask == null)
+            {
+                throw new ObjectNotFoundException($"Task {id} doesn't exist");
+            }
+
+            _context.TodoTasks.Remove(todoTask);
+            await _context.SaveChangesAsync();
+        }
+
         private IQueryable<TodoTask> GetTodoTasksQuery()
         {
             return _context.TodoTasks
