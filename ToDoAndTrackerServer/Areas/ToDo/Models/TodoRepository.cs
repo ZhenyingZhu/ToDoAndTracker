@@ -94,45 +94,6 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ProjectDTO> AddTodoTaskToProjectAsync(int pid, TodoTaskDTO todoTaskDTO)
-        {
-            if (!ProjectExists(pid))
-            {
-                throw new ObjectNotFoundException($"Project {pid} doesn't exist");
-            }
-
-            if (todoTaskDTO.Id != 0)
-            {
-                _logger.LogWarning($"Creating a todoTask {todoTaskDTO.Name} with id set {todoTaskDTO.Id}");
-            }
-
-            TodoTask todoTask = new TodoTask
-            {
-                OwnerId = _userId,
-                Name= todoTaskDTO.Name,
-                ProjectId= pid,
-                State = todoTaskDTO.State
-            };
-            _context.TodoTasks.Add(todoTask);
-
-            try
-            {
-                await _context.SaveChangesAsync();
-
-                var projectDTO = await GetProjectByIdAsync(pid);
-                if (projectDTO == null)
-                {
-                    throw new ObjectNotFoundException($"Project {pid} doesn't exist");
-                }
-
-                return projectDTO;
-            }
-            catch (DBConcurrencyException) when (!ProjectExists(pid))
-            {
-                throw new ObjectNotFoundException($"Project {pid} doesn't exist");
-            }
-        }
-
         private IQueryable<Project> GetProjectsQuery()
         {
             return _context.Projects
@@ -155,6 +116,45 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         #endregion
 
         #region TodoTask
+        public async Task<ProjectDTO> AddTodoTaskToProjectAsync(int pid, TodoTaskDTO todoTaskDTO)
+        {
+            if (!ProjectExists(pid))
+            {
+                throw new ObjectNotFoundException($"Project {pid} doesn't exist");
+            }
+
+            if (todoTaskDTO.Id != 0)
+            {
+                _logger.LogWarning($"Creating a todoTask {todoTaskDTO.Name} with id set {todoTaskDTO.Id}");
+            }
+
+            TodoTask todoTask = new TodoTask
+            {
+                OwnerId = _userId,
+                Name = todoTaskDTO.Name,
+                ProjectId = pid,
+                State = todoTaskDTO.State
+            };
+            _context.TodoTasks.Add(todoTask);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+                var projectDTO = await GetProjectByIdAsync(pid);
+                if (projectDTO == null)
+                {
+                    throw new ObjectNotFoundException($"Project {pid} doesn't exist");
+                }
+
+                return projectDTO;
+            }
+            catch (DBConcurrencyException) when (!ProjectExists(pid))
+            {
+                throw new ObjectNotFoundException($"Project {pid} doesn't exist");
+            }
+        }
+
         public async Task<List<TodoTaskDTO>> GetTodoTasksAsync()
         {
             return await GetTodoTasksQuery()
