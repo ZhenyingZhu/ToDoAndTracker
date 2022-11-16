@@ -12,9 +12,9 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
 
         public int ProjectId { get; set; }
 
-        public string ProjectName { get; set; } = null!;
+        public string? ProjectName { get; set; }
 
-        public TaskState State { get; set; }
+        public string State { get; set; } = null!;
 
         public TodoTaskDTO()
         {
@@ -26,7 +26,7 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
             this.Name = task.Name;
             this.ProjectId = task.ProjectId;
             this.ProjectName = task.Project.Name;
-            this.State = task.State;
+            this.State = task.State.ToString();
         }
     }
 }

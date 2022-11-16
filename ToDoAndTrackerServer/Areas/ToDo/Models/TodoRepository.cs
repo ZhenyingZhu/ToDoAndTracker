@@ -116,9 +116,10 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         #endregion
 
         #region TodoTask
-        public async Task<ProjectDTO> AddTodoTaskToProjectAsync(int pid, TodoTaskDTO todoTaskDTO)
+        public async Task<TodoTaskDTO> AddTodoTaskToProjectAsync(int pid, TodoTaskDTO todoTaskDTO)
         {
-            if (!ProjectExists(pid))
+            var projectDTO = await GetProjectByIdAsync(pid);
+            if (projectDTO == null)
             {
                 throw new ObjectNotFoundException($"Project {pid} doesn't exist");
             }
@@ -133,21 +134,19 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
                 OwnerId = _userId,
                 Name = todoTaskDTO.Name,
                 ProjectId = pid,
-                State = todoTaskDTO.State
+                State = (TaskState)Enum.Parse(typeof(TaskState), todoTaskDTO.State)
             };
             _context.TodoTasks.Add(todoTask);
 
             try
             {
                 await _context.SaveChangesAsync();
-
-                var projectDTO = await GetProjectByIdAsync(pid);
-                if (projectDTO == null)
+                var newTodoTaskDTO = new TodoTaskDTO(todoTask)
                 {
-                    throw new ObjectNotFoundException($"Project {pid} doesn't exist");
-                }
+                    ProjectName = projectDTO.Name
+                };
 
-                return projectDTO;
+                return newTodoTaskDTO;
             }
             catch (DBConcurrencyException) when (!ProjectExists(pid))
             {
@@ -187,7 +186,7 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
             }
 
             existingTodoTask.Name = updatedTodoTaskDTO.Name;
-            existingTodoTask.State = updatedTodoTaskDTO.State;
+            existingTodoTask.State = (TaskState)Enum.Parse(typeof(TaskState), updatedTodoTaskDTO.State);
 
             _context.Entry(existingTodoTask).State = EntityState.Modified;
 

@@ -74,21 +74,22 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
             return NoContent();
         }
 
-        // POST: api/{project id}/Tasks
+        // POST: api/Projects/{project id}/Tasks
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("{pid}")]
+        [HttpPost("{pid}/Tasks")]
+        [Route("api/Projects")]
         public async Task<ActionResult<TodoTaskDTO>> CreateTask(int pid, TodoTaskDTO todoTaskDTO)
         {
             try
             {
-                await _repo.AddTodoTaskToProjectAsync(pid, todoTaskDTO);
+                var newTodoTaskDTO = await _repo.AddTodoTaskToProjectAsync(pid, todoTaskDTO);
+
+                return CreatedAtAction(nameof(GetTask), new { id = todoTaskDTO.Id }, newTodoTaskDTO);
             }
             catch (ObjectNotFoundException ex)
             {
                 return NotFound(ex);
             }
-
-            return CreatedAtAction(nameof(GetTask), new { id = todoTaskDTO.Id }, todoTaskDTO);
         }
 
         // POST: api/Tasks/{task id}/Belongs/{project id}

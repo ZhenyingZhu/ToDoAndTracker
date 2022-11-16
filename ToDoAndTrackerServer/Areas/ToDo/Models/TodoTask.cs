@@ -5,9 +5,10 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
 {
     public enum TaskState
     {
-        InProgress,
-        Done,
         Backlog,
+        InProgress,
+        Blocked,
+        Done,
         Abandoned,
     }
 
