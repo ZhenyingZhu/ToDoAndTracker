@@ -34,6 +34,14 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
             return await _repo.GetTodoTasksAsync();
         }
 
+        // GET: api/Tasks
+        [HttpGet("/api/Projects/{pid}/Tasks")]
+        public async Task<ActionResult<IEnumerable<TodoTaskDTO>>> GetTasksByProjectId()
+        {
+            // zhenying: need to implement
+            return await _repo.GetTodoTasksAsync();
+        }
+
         // GET: api/Tasks/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoTaskDTO>> GetTask(int id)
@@ -76,8 +84,7 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
 
         // POST: api/Projects/{project id}/Tasks
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("{pid}/Tasks")]
-        [Route("api/Projects")]
+        [HttpPost("/api/Projects/{pid}/Tasks")]
         public async Task<ActionResult<TodoTaskDTO>> CreateTask(int pid, TodoTaskDTO todoTaskDTO)
         {
             try

@@ -22,3 +22,23 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<div id="viewTasksForm">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>State</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody id="todos"></tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        getTasks();
+    </script>
+}
