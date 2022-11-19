@@ -36,10 +36,9 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
 
         // GET: api/Tasks
         [HttpGet("/api/Projects/{pid}/Tasks")]
-        public async Task<ActionResult<IEnumerable<TodoTaskDTO>>> GetTasksByProjectId()
+        public async Task<ActionResult<IEnumerable<TodoTaskDTO>>> GetTasksByProjectId(int pid)
         {
-            // zhenying: need to implement
-            return await _repo.GetTodoTasksAsync();
+            return await _repo.GetTodoTasksByProjectAsync(pid);
         }
 
         // GET: api/Tasks/5

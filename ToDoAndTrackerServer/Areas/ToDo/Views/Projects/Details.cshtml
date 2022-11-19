@@ -32,13 +32,13 @@
                 <th>Delete</th>
             </tr>
         </thead>
-        <tbody id="todos"></tbody>
+        <tbody id="tasksByProject"></tbody>
     </table>
 </div>
 
 @section Scripts {
-    <script src="js/site.js" asp-append-version="true"></script>
+    <script src="/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript">
-        getTasks();
+        getTasksByProject(@Model?.Id);
     </script>
 }

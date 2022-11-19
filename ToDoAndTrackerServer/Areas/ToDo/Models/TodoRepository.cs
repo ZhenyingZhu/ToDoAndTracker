@@ -168,6 +168,14 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<List<TodoTaskDTO>> GetTodoTasksByProjectAsync(int pid)
+        {
+            return await GetTodoTasksQuery()
+                .Where(t => t.ProjectId == pid)
+                .Select(t => new TodoTaskDTO(t))
+                .ToListAsync();
+        }
+
         public async Task UpdateTodoTaskAsync(TodoTaskDTO updatedTodoTaskDTO)
         {
             // Error handling is done here because it is called by JS so cannot handle complicate logics.
