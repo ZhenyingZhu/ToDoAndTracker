@@ -6,23 +6,33 @@ const taskUri = '/api/tasks';
 let tasksByProject = [];
 let selectedProjectId = -1;
 
+/**
+ * @param {int} projectId
+ * Called when need to display the tasksByProject table with latest data.
+ */
 function getTasksByProject(projectId) {
-    // zhenying: think whether to set it first or set it after?
-    selectedProjectId = projectId;
-
+    console.log(`getTasksByProject ${projectId}`);
     fetch(`${projectUri}/${projectId}/tasks`)
         .then(response => response.json())
-        .then(data => _displayTasksByProject(data))
-        .catch(error => _displayErrorMessage('Unable to update project.', error));
+        .then(tasks => {
+            tasksByProject = tasks;
+            _displayTasksByProject();
+        })
+        .catch(error => _displayErrorMessage('Unable to fetch tasksByProject.', error, 'tasksErrorMessage'));
+    selectedProjectId = projectId;
 }
 
-function _displayTasksByProject(data) {
+/**
+ * Display the tasksByProject table based on stored selectProjectId and tasksByProject list.
+ */
+function _displayTasksByProject() {
+    console.log(`_displayTasksByProject ${selectedProjectId}`);
     const tBody = document.getElementById('tasksByProject');
     tBody.innerHTML = '';
 
     const button = document.createElement('button');
 
-    data.forEach(task => {
+    tasksByProject.forEach(task => {
         let tr = tBody.insertRow();
 
         let taskNameTextNode = document.createTextNode(task.name);
@@ -33,19 +43,45 @@ function _displayTasksByProject(data) {
         let td2 = tr.insertCell(1);
         td2.appendChild(taskStateTextNode);
 
-    //    let checkButton = button.cloneNode(false);
-    //    checkButton.innerText = 'Check';
-    //    checkButton.setAttribute('onclick', `_displayProjectEditForm(${project.id})`);
-    //    let td3 = tr.insertCell(2);
-    //    td3.appendChild(checkButton);
-    });
+        let taskEditButton = button.cloneNode(false);
+        taskEditButton.innerText = 'Edit';
+        taskEditButton.setAttribute('onclick', `_displayTaskEditForm(${task.id})`);
+        let td3 = tr.insertCell(2);
+        td3.appendChild(taskEditButton);
 
-    tasks = data;
+        let taskDeleteButton = button.cloneNode(false);
+        taskDeleteButton.innerText = 'Delete';
+        taskDeleteButton.setAttribute('onclick', `_displayTaskDeleteForm(${task.id})`);
+        let td4 = tr.insertCell(3);
+        td4.appendChild(taskDeleteButton);
+    });
 }
 
-function _displayErrorMessage(msg, error) {
+/**
+ * @param {int} taskId
+ * Called when need to display the editTask form.
+ */
+function _displayTaskEditForm(taskId) {
+    console.log(`_displayTaskEditForm ${taskId}`);
+}
+
+/**
+ * @param {int} taskId
+ * Called when need to display the deleteTask form.
+ */
+function _displayTaskDeleteForm(taskId) {
+    console.log(`_displayTaskDeleteForm ${taskId}`);
+}
+
+/**
+ * @param {string} msg
+ * @param {object} error
+ * @param {string} errEleId
+ * Called when need to display the error message in the error element.
+ */
+function _displayErrorMessage(msg, error, errEleId) {
     console.error(msg, error);
-    // const errorPara = document.getElementById('projectErrorMessage');
-    // errorPara.innerText = msg;
-    // errorPara.style.display = 'block';
+    const errorPara = document.getElementById(errEleId);
+     errorPara.innerText = msg;
+     errorPara.style.display = 'block';
 }

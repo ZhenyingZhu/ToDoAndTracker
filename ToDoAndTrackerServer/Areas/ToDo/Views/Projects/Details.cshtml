@@ -22,11 +22,20 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<!-- TODO: set the format to be error -->
+<p id="tasksErrorMessage"></p>
+
 <div id="viewTasksForm">
-    <table>
+    <h5>Tasks</h5>
+
+
+    <p id="todoCounter"></p>
+
+    <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
+                <th>Task</th>
                 <th>State</th>
                 <th>Edit</th>
                 <th>Delete</th>
