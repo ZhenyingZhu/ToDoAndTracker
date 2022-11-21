@@ -3,8 +3,18 @@
 
 const projectUri = '/api/projects';
 const taskUri = '/api/tasks';
+const tasksCountElement = 'tasksCount';
+const tasksByProjectTableElement = 'tasksByProject';
+
 let tasksByProject = [];
 let selectedProjectId = -1;
+
+/**
+ * Add a task to a project. The input is retrieved from the form.
+ */
+function addTaskToProject() {
+
+}
 
 /**
  * @param {int} projectId
@@ -27,13 +37,17 @@ function getTasksByProject(projectId) {
  */
 function _displayTasksByProject() {
     console.log(`_displayTasksByProject ${selectedProjectId}`);
-    const tBody = document.getElementById('tasksByProject');
-    tBody.innerHTML = '';
+
+    const countBody = document.getElementById(tasksCountElement);
+    countBody.innerHTML = `In total ${tasksByProject.length} task(s)`;
+
+    const tableBody = document.getElementById(tasksByProjectTableElement);
+    tableBody.innerHTML = '';
 
     const button = document.createElement('button');
 
     tasksByProject.forEach(task => {
-        let tr = tBody.insertRow();
+        let tr = tableBody.insertRow();
 
         let taskNameTextNode = document.createTextNode(task.name);
         let td1 = tr.insertCell(0);

@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ToDoAndTrackerServer.Areas.ToDo.Models
 {
+    /// <summary>
+    /// If updates, need to update Project Details.cshtml
+    /// </summary>
     public enum TaskState
     {
         Backlog,
