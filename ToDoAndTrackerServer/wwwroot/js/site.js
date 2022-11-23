@@ -5,15 +5,42 @@ const projectUri = '/api/projects';
 const taskUri = '/api/tasks';
 const tasksCountElement = 'tasksCount';
 const tasksByProjectTableElement = 'tasksByProject';
+const createTaskNameElement = 'createTaskName';
+const createTaskStateElement = 'createTaskState';
 
 let tasksByProject = [];
 let selectedProjectId = -1;
 
 /**
  * Add a task to a project. The input is retrieved from the form.
+ * Called when submit the addTaskToProjectForm.
  */
 function addTaskToProject() {
+    // TODO: check if selectedProject is not -1.
+    const createTaskName = document.getElementById(createTaskNameElement);
+    const createTaskState = document.getElementById(createTaskStateElement);
 
+    const task = {
+        name: createTaskName.value.trim(),
+        state: createTaskState.value.trim()
+    };
+
+    fetch(`${projectUri}/${selectedProjectId}/tasks`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(task)
+    })
+        .then(response => response.json())
+        .then(() => {
+            getTasksByProject(selectedProjectId);
+            createTaskName.value = '';
+            // zhenying: anyway to not hard code it here?
+            createTaskState.value = 'Backlog';
+        })
+        .catch(error => console.error('Unable to add item.', error)); // Handle error.
 }
 
 /**
