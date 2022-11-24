@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,37 +13,39 @@ using ToDoAndTrackerServer.Data;
 namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
 {
     [Area("ToDo")]
+    [Authorize]
     public class TasksController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly TodoRepository _repo;
+        private readonly ILogger<TasksController> _logger;
 
-        public TasksController(ApplicationDbContext context)
+        public TasksController(TodoRepository repo, ILogger<TasksController> logger)
         {
-            _context = context;
+            _repo = repo;
+            _logger = logger;
         }
 
         // GET: ToDo/Tasks
         public async Task<IActionResult> Index()
         {
-              return View(await _context.TodoTaskDTO.ToListAsync());
+              return View(await _repo.GetTodoTasksAsync());
         }
 
         // GET: ToDo/Tasks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.TodoTaskDTO == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var todoTaskDTO = await _context.TodoTaskDTO
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (todoTaskDTO == null)
+            var taskDTO = await _repo.GetTodoTaskByIdAsync(id.Value);
+            if (taskDTO == null)
             {
                 return NotFound();
             }
 
-            return View(todoTaskDTO);
+            return View(taskDTO);
         }
 
         // GET: ToDo/Tasks/Create
@@ -50,36 +54,21 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
             return View();
         }
 
-        // POST: ToDo/Tasks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ProjectId,ProjectName,State")] TodoTaskDTO todoTaskDTO)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(todoTaskDTO);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(todoTaskDTO);
-        }
-
         // GET: ToDo/Tasks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.TodoTaskDTO == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var todoTaskDTO = await _context.TodoTaskDTO.FindAsync(id);
-            if (todoTaskDTO == null)
+            var taskDTO = await _repo.GetTodoTaskByIdAsync(id.Value);
+            if (taskDTO == null)
             {
                 return NotFound();
             }
-            return View(todoTaskDTO);
+
+            return View(taskDTO);
         }
 
         // POST: ToDo/Tasks/Edit/5
@@ -87,9 +76,9 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ProjectId,ProjectName,State")] TodoTaskDTO todoTaskDTO)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,State")] TodoTaskDTO taskDTO)
         {
-            if (id != todoTaskDTO.Id)
+            if (id != taskDTO.Id)
             {
                 return NotFound();
             }
@@ -98,41 +87,34 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
             {
                 try
                 {
-                    _context.Update(todoTaskDTO);
-                    await _context.SaveChangesAsync();
+                    await _repo.UpdateTodoTaskAsync(taskDTO);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (ObjectNotFoundException)
                 {
-                    if (!TodoTaskDTOExists(todoTaskDTO.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(todoTaskDTO);
+
+            return View(taskDTO);
         }
 
         // GET: ToDo/Tasks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.TodoTaskDTO == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var todoTaskDTO = await _context.TodoTaskDTO
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (todoTaskDTO == null)
+            var taskDTO = await _repo.GetTodoTaskByIdAsync(id.Value);
+            if (taskDTO == null)
             {
                 return NotFound();
             }
 
-            return View(todoTaskDTO);
+            return View(taskDTO);
         }
 
         // POST: ToDo/Tasks/Delete/5
@@ -140,23 +122,15 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.TodoTaskDTO == null)
+            // TODO: handle it in repo.
+            // if (_context.Project == null) return Problem("Entity set 'ApplicationDbContext.Project'  is null.");
+            var taskDTO = await _repo.GetTodoTaskByIdAsync(id);
+            if (taskDTO != null)
             {
-                return Problem("Entity set 'ApplicationDbContext.TodoTaskDTO'  is null.");
+                await _repo.DeleteTodoTaskAsync(id);
             }
-            var todoTaskDTO = await _context.TodoTaskDTO.FindAsync(id);
-            if (todoTaskDTO != null)
-            {
-                _context.TodoTaskDTO.Remove(todoTaskDTO);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool TodoTaskDTOExists(int id)
-        {
-          return _context.TodoTaskDTO.Any(e => e.Id == id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

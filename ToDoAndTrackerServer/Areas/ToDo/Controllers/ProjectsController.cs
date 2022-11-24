@@ -39,13 +39,13 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
                 return NotFound();
             }
 
-            var project = await _repo.GetProjectByIdAsync(id.Value);
-            if (project == null)
+            var projectDTO = await _repo.GetProjectByIdAsync(id.Value);
+            if (projectDTO == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            return View(projectDTO);
         }
 
         // GET: ToDo/Projects/Create
@@ -77,12 +77,13 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
                 return NotFound();
             }
 
-            var project = await _repo.GetProjectByIdAsync(id.Value);
-            if (project == null)
+            var projectDTO = await _repo.GetProjectByIdAsync(id.Value);
+            if (projectDTO == null)
             {
                 return NotFound();
             }
-            return View(project);
+
+            return View(projectDTO);
         }
 
         // POST: ToDo/Projects/Edit/5
@@ -107,27 +108,28 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
                 {
                     return NotFound();
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(projectDTO);
         }
 
         // GET: ToDo/Projects/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            // TODO: handle it in repo.
             if (id == null)
             {
                 return NotFound();
             }
 
-            var project = await _repo.GetProjectByIdAsync(id.Value);
-            if (project == null)
+            var projectDTO = await _repo.GetProjectByIdAsync(id.Value);
+            if (projectDTO == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            return View(projectDTO);
         }
 
         // POST: ToDo/Projects/Delete/5
@@ -137,8 +139,8 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
         {
             // TODO: handle it in repo.
             // if (_context.Project == null) return Problem("Entity set 'ApplicationDbContext.Project'  is null.");
-            var project = await _repo.GetProjectByIdAsync(id);
-            if (project != null)
+            var projectDTO = await _repo.GetProjectByIdAsync(id);
+            if (projectDTO != null)
             {
                 await _repo.DeleteProjectAsync(id);
             }
