@@ -2,7 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 const projectUri = '/api/projects';
-const taskUri = '/api/tasks';
+const taskDetailUri = '/Todo/Tasks/Details?id=';
 const tasksCountElement = 'tasksCount';
 const tasksByProjectTableElement = 'tasksByProject';
 const createTaskNameElement = 'createTaskName';
@@ -71,7 +71,7 @@ function _displayTasksByProject() {
     const tableBody = document.getElementById(tasksByProjectTableElement);
     tableBody.innerHTML = '';
 
-    const button = document.createElement('button');
+    const hrefLink = document.createElement('a');
 
     tasksByProject.forEach(task => {
         let tr = tableBody.insertRow();
@@ -84,13 +84,15 @@ function _displayTasksByProject() {
         let td2 = tr.insertCell(1);
         td2.appendChild(taskStateTextNode);
 
-        let taskEditButton = button.cloneNode(false);
-        taskEditButton.innerText = 'Edit';
-        taskEditButton.setAttribute('onclick', `_displayTaskEditForm(${task.id})`);
+        let taskDetailLink = hrefLink.cloneNode(false);
+        let detailText = document.createTextNode("Detail");
+        taskDetailLink.appendChild(detailText);
+        taskDetailLink.title = "task detail";
+        taskDetailLink.href = `${taskDetailUri}${task.id}`;
         let td3 = tr.insertCell(2);
-        td3.appendChild(taskEditButton);
+        td3.appendChild(taskDetailLink);
 
-        let taskDeleteButton = button.cloneNode(false);
+        let taskDeleteButton = hrefLink.cloneNode(false);
         taskDeleteButton.innerText = 'Delete';
         taskDeleteButton.setAttribute('onclick', `_displayTaskDeleteForm(${task.id})`);
         let td4 = tr.insertCell(3);
