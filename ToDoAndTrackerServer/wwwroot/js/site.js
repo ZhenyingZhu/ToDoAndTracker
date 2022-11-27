@@ -65,6 +65,10 @@ function getTasksByProject(projectId) {
 function _displayTasksByProject() {
     console.log(`_displayTasksByProject ${selectedProjectId}`);
 
+    if (selectedProjectId === -1) {
+        return;
+    }
+
     const countBody = document.getElementById(tasksCountElement);
     countBody.innerHTML = `In total ${tasksByProject.length} task(s)`;
 
@@ -98,14 +102,6 @@ function _displayTasksByProject() {
         let td4 = tr.insertCell(3);
         td4.appendChild(taskDeleteButton);
     });
-}
-
-/**
- * @param {int} taskId
- * Called when need to display the editTask form.
- */
-function _displayTaskEditForm(taskId) {
-    console.log(`_displayTaskEditForm ${taskId}`);
 }
 
 /**

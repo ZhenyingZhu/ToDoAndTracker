@@ -29,7 +29,9 @@ namespace ToDoAndTrackerServer.Areas.Identity.Pages.Account
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {
-                return LocalRedirect(returnUrl);
+                // zhenying: the routing template seems like not setup correct. Hard code it to be the home page.
+                _logger.LogInformation($"Return URL {returnUrl}");
+                return LocalRedirect("~/Index");
             }
             else
             {
