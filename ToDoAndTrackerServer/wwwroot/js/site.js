@@ -7,6 +7,7 @@ const tasksCountElement = 'tasksCount';
 const tasksByProjectTableElement = 'tasksByProject';
 const createTaskNameElement = 'createTaskName';
 const createTaskStateElement = 'createTaskState';
+const projectEntryPrefix = 'projectEntry';
 
 let tasksByProject = [];
 let selectedProjectId = -1;
@@ -68,6 +69,8 @@ function _displayTasksByProject() {
     if (selectedProjectId === -1) {
         return;
     }
+
+    const projectEntry = document.getElementById(projectEntryPrefix + selectedProjectId);
 
     const countBody = document.getElementById(tasksCountElement);
     countBody.innerHTML = `In total ${tasksByProject.length} task(s)`;
