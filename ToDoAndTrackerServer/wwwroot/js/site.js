@@ -50,14 +50,15 @@ function addTaskToProject() {
  */
 function getTasksByProject(projectId) {
     console.log(`getTasksByProject ${projectId}`);
+
     fetch(`${projectUri}/${projectId}/tasks`)
         .then(response => response.json())
         .then(tasks => {
             tasksByProject = tasks;
+            selectedProjectId = projectId;
             _displayTasksByProject();
         })
         .catch(error => _displayErrorMessage('Unable to fetch tasksByProject.', error, 'tasksErrorMessage'));
-    selectedProjectId = projectId;
 }
 
 /**
@@ -66,11 +67,15 @@ function getTasksByProject(projectId) {
 function _displayTasksByProject() {
     console.log(`_displayTasksByProject ${selectedProjectId}`);
 
+    let projectEntries = document.querySelectorAll("tr [projid]");
+    projectEntries.forEach(p => p.classList.remove('table-primary'));
+
     if (selectedProjectId === -1) {
         return;
     }
 
-    const projectEntry = document.getElementById(projectEntryPrefix + selectedProjectId);
+    const projectEntry = document.querySelector(`tr [projid='${selectedProjectId}']`);
+    projectEntry.classList.add('table-primary');
 
     const countBody = document.getElementById(tasksCountElement);
     countBody.innerHTML = `In total ${tasksByProject.length} task(s)`;
