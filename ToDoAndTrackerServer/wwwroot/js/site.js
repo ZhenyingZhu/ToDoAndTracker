@@ -74,8 +74,10 @@ function _displayTasksByProject() {
         return;
     }
 
-    const projectEntry = document.querySelector(`tr [projid='${selectedProjectId}']`);
-    projectEntry.classList.add('table-primary');
+    let projectEntry = document.querySelector(`tr [projid='${selectedProjectId}']`);
+    if (projectEntry !== null) {
+        projectEntry.classList.add('table-primary');
+    }
 
     const countBody = document.getElementById(tasksCountElement);
     countBody.innerHTML = `In total ${tasksByProject.length} task(s)`;
