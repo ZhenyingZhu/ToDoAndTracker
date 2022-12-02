@@ -3,6 +3,7 @@
 
 const projectUri = '/api/projects';
 const taskDetailUri = '/Todo/Tasks/Details?id=';
+const taskDeleteUri = '/Todo/Tasks/Delete?id=';
 const tasksCountElement = 'tasksCount';
 const tasksByProjectTableElement = 'tasksByProject';
 const createTaskNameElement = 'createTaskName';
@@ -106,11 +107,13 @@ function _displayTasksByProject() {
         let td3 = tr.insertCell(2);
         td3.appendChild(taskDetailLink);
 
-        let taskDeleteButton = hrefLink.cloneNode(false);
-        taskDeleteButton.innerText = 'Delete';
-        taskDeleteButton.setAttribute('onclick', `_displayTaskDeleteForm(${task.id})`);
+        let taskDeleteLink = hrefLink.cloneNode(false);
+        let deleteText = document.createTextNode("Delete");
+        taskDeleteLink.appendChild(deleteText);
+        taskDeleteLink.title = "task delete";
+        taskDeleteLink.href = `${taskDeleteUri}${task.id}`;
         let td4 = tr.insertCell(3);
-        td4.appendChild(taskDeleteButton);
+        td4.appendChild(taskDeleteLink);
     });
 }
 
