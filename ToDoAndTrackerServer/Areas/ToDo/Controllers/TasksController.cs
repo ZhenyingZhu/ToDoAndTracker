@@ -130,7 +130,7 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Controllers
                 await _repo.DeleteTodoTaskAsync(id);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Projects");
         }
     }
 }
