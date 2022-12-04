@@ -28,7 +28,9 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
             Project project = new Project()
             {
                 OwnerId = _userId,
-                Name = projectDTO.Name
+                Name = projectDTO.Name,
+                CreatedDate = projectDTO.CreatedDate,
+                Note = projectDTO.Note,
             };
             _context.Projects.Add(project);
             await _context.SaveChangesAsync();

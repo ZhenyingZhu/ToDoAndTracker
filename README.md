@@ -95,16 +95,16 @@ P0:
 - id
 - name
 - create date
-- deadline date
 - owner
-- project note: an onenote link
+- note: an onenote link
 - tasks: an array ref to Task
 
 P1:
 
 - tags: ref to Tag. Tag is a class because when assign a tag to a project, we want to easily select from a list of tags. Searchs all start from projects. Some tags: work, household, SelfImprove, health, leisure
 - involvedUsers: an array of userIds as foreign keys. Not use User ref as users are probably already created
-- isArchieved: whether to archieve the project so it doesn't appear
+- hide: whether to hide/archive the project so it doesn't appear
+- due date: see if putting the due date on tasks make more sense, because most of the projects never end
 
 #### P0 Task
 

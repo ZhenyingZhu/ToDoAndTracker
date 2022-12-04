@@ -12,6 +12,11 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         [Required]
         public string Name { get; set; } = null!;
 
+        [DataType(DataType.Date), Display(Name = "Created Date")]
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        public string? Note { get; set; }
+
         public ICollection<TodoTask> TodoTasks { get; set; } = null!;
     }
 }

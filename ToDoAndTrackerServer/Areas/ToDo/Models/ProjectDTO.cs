@@ -8,6 +8,10 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         public int Id { get; set; }
         public string Name { get; set; } = null!;
 
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        public string? Note { get; set; }
+
         public ProjectDTO()
         {
             Name = null!;
@@ -17,6 +21,8 @@ namespace ToDoAndTrackerServer.Areas.ToDo.Models
         {
             Id = project.Id;
             Name = project.Name;
+            CreatedDate = project.CreatedDate;
+            Note = project.Note;
         }
     }
 }
