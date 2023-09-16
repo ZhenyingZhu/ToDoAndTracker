@@ -21,7 +21,7 @@ A ToDo app with a time tracker.
   - One task can have multiple events. If an event is interrupted, then the current event should be ended and a new event should started.
   - This design encourages focusing on one task at a time. But in case if doing two tasks in one event and lose track, evenly split the time.
   - Can also have a rate of work efficiency. This can be used to track the most efficient time in a day.
-- Plan: 
+- Plan:
   - Can add an estimate duration to complete it.
 
 ### Views
@@ -86,7 +86,7 @@ Properties
 
 #### P0 Project
 
-See [terms](#Terms).
+See [terms](#terms).
 
 Properties
 
@@ -108,7 +108,7 @@ P1:
 
 #### P0 Task
 
-See [terms](#Terms).
+See [terms](#terms).
 
 Properties
 
@@ -133,7 +133,7 @@ TODO
 
 #### Event
 
-See [terms](#Terms).
+See [terms](#terms).
 
 Properties
 
